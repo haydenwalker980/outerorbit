@@ -49,7 +49,7 @@
             <br>
             <div class="padding">
                 <span id="padding10">
-                    <small>SpaceMy / Blog / <?php echo $blog['subject']; ?></small>
+                    <small><a href="/">SpaceMy</a> / <a href="/blogs/">Blogs</a> / <a href="/blogs/view.php?id=<?php echo $_GET['id']?>"><?php echo $blog['subject']; ?></a></small>
                 </span><br>
                 <div class="customtopLeft">  
                     <div class="splashBlue">

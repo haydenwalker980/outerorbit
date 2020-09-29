@@ -49,7 +49,7 @@
             <br>
             <div class="padding">
                 <span id="padding10">
-                    <small>SpaceMy / Groups / <?php echo htmlspecialchars($group['name']); ?></small>
+                    <small><a href="/">SpaceMy</a> / <a href="/groups/">Groups</a> / <a href="/groups/view.php?id=<?php echo $_GET['id']?>"><?php echo htmlspecialchars($group['name']); ?></a></small>
                 </span><br>
                 <div class="customtopLeft">  
                     <div class="splashBlue">
