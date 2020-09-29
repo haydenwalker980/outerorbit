@@ -12,7 +12,23 @@
     </span>
 </div>
 <div class="headerBottom">
-    <small><a href="/groups">Groups</a> &bull; <a href="/blogs">Blogs</a> &bull; <a href="/pms.php">PMs</a> &bull; <a href="/friends/">Friends</a> &bull; <a href="/jukebox.php">Jukebox</a> &bull; <a href="/users.php">All Users</a> <?php if(isset($_SESSION['siteusername'])) { echo "<span id='floatRight'><span id='custompadding'><a href='/edit'>Edit Items</a> &bull; <a href='/manage.php'>Manage User</a> &bull; " . htmlspecialchars($_SESSION['siteusername']) . "</span></span>"; } ?></small>
+    <small>
+        <a href="/groups">Groups</a> &bull;
+        <a href="/blogs">Blogs</a> &bull;
+        <a href="/pms.php">PMs</a> &bull;
+        <a href="/friends/">Friends</a> &bull;
+        <a href="/jukebox.php">Jukebox</a> &bull;
+        <a href="/users.php">All Users</a>
+        <?php if(isset($_SESSION['siteusername'])) {?>
+        <span id="floatRight">
+            <span id="custompadding">
+                <a href='/edit'>Edit Items</a> &bull;
+                <a href='/manage.php'>Manage User</a> &bull;
+                <?php echo htmlspecialchars($_SESSION['siteusername'])?>
+            </span>
+        </span>
+        ?>
+    </small>
 </div>
 <?php
 if(isset($_SESSION['siteusername'])) {
