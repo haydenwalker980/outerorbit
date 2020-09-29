@@ -27,7 +27,7 @@
         }
         ?>
         <meta property="og:title" content="<?php echo $group['name']; ?>" />
-        <meta property="og:description" content="<?php echo $group['description']; ?>" />
+        <meta property="og:description" content="<?php echo preg_replace("/\"/", "&quot;", $group['description']); ?>" />
         <meta property="og:image" content="https://spacemy.xyz/dynamic/groups/<?php echo $group['pic']; ?>" />
         <style>
             .customtopLeft {

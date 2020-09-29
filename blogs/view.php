@@ -11,7 +11,7 @@
         <script src='https://www.google.com/recaptcha/api.js' async defer></script>
         <script src="/onLogin.js"></script>
         <meta property="og:title" content="<?php echo $blog['subject'] . " by " . $blog['author']; ?>" />
-        <meta property="og:description" content="<?php echo $blog['message']; ?>" />
+        <meta property="og:description" content="<?php echo preg_replace("/\"/", "&quot;", $blog['message']); ?>" />
         <meta http-equiv="Content-Security-Policy" content="default-src 'self' *.google.com *.gstatic.com; img-src 'self' images.weserv.nl; style-src 'self' 'unsafe-inline';">
         <style>
             .customtopLeft {
