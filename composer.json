@@ -1,0 +1,5 @@
+{
+    "require": {
+        "smith197/steamauthentication": "^4.0"
+    }
+}
