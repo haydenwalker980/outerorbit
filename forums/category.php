@@ -73,7 +73,18 @@
                         while($row = $result->fetch_assoc()) { 
                     ?>
                         <tr>
-                            <td><b><a href="thread.php?id=<?php echo $row['id']; ?>"><?php echo $row['title']; ?></a></b></td>
+                            <td>
+                                <b><a href="thread.php?id=<?php echo $row['id']; ?>"><?php echo $row['title']; ?></a></b><br>
+                                <?php
+                                    $stmt = $conn->prepare("SELECT * FROM `reply` WHERE `toid` = ?");
+                                    $thread_id = $row['id'];
+                                    $stmt->bind_param("i", $thread_id);
+                                    $stmt->execute();
+                                    $stmt->store_result();
+                                    $reply_count = $stmt->num_rows;
+                                ?>
+                                <small><?php echo $reply_count?> repl<?php echo ($reply_count === 1 ? "y" : "ies")?></small>
+                            </td>
                             <td>
                                 <center>
                                     <a href="/profile.php?id=<?php echo getIDFromUser($row['author'], $conn); ?>">
