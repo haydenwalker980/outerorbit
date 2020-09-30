@@ -37,8 +37,16 @@ function getUserFromUsername($username, $connection) {
         <a href="/forums">Forums</a> &bull;
         <a href="/groups">Groups</a> &bull;
         <a href="/blogs">Blogs</a> &bull;
+        <?php if (isset($_SESSION['siteusername'])) {
+            $stmt = $conn->prepare("SELECT * FROM `friends` WHERE reciever = ? AND status = 'u'");
+            $stmt->bind_param("s", $_SESSION['siteusername']);
+            $stmt->execute();
+            $stmt->store_result();
+            $unread_friend_count = $stmt->num_rows;
+        ?>
         <a href="/pms.php">PMs</a> &bull;
-        <a href="/friends/">Friends</a> &bull;
+        <a href="/friends/">Friends<?php echo ($unread_friend_count === 0 ? "" : " (" . $unread_friend_count . ")" )?></a> &bull;
+        <?php }?>
         <a href="/jukebox.php">Jukebox</a> &bull;
         <a href="/users.php">All Users</a>
         <?php if (isset($_SESSION['siteusername'])) {?>

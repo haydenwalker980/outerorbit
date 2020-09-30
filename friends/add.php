@@ -20,7 +20,7 @@ $stmt->bind_param("ss", $_SESSION['siteusername'], $name);
     if($result->num_rows === 1) die('You already sent a friend request to this person');
 $stmt->close();
 
-$stmt = $conn->prepare("INSERT INTO friends (sender, reciever) VALUES (?, ?)");
+$stmt = $conn->prepare("INSERT INTO friends (sender, reciever, status) VALUES (?, ?, 'u')");
 $stmt->bind_param("ss", $_SESSION['siteusername'], $name);
 
 $stmt->execute();
