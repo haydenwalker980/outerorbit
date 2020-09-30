@@ -81,7 +81,14 @@
                         while($row = $result->fetch_assoc()) { 
                     ?>
                         <tr>
-                            <td><a href="/profile.php?id=<?php echo getIDFromUser($row['author'], $conn); ?>"><img style="float: left; height: 3em; width: 3em;" src="/dynamic/pfp/<?php echo getPFPFromUser($row['author'], $conn); ?>"><br><b><?php echo $row['author']; ?></b></a></center></td>
+                            <td>
+                                <center>
+                                    <a href="/profile.php?id=<?php echo getIDFromUser($row['author'], $conn); ?>">
+                                        <img style="height: 3em; width: 3em;" src="/dynamic/pfp/<?php echo getPFPFromUser($row['author'], $conn); ?>"><br>
+                                        <b><?php echo $row['author']; ?></b>
+                                    </a>
+                                </center>
+                            </td>
                             <td><?php echo parseText($row['text']); ?></td>
                             <td><?php echo $row['date']; ?></td>
                         </tr>
