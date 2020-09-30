@@ -144,8 +144,10 @@
                             while($row = $result->fetch_assoc()) { ?>
                         <tr>
                             <td>
-                                <img style="vertical-align: middle" width="24" height="24" src="/dynamic/pfp/<?php echo getPFPFromUser($row['sender'], $conn); ?>">
-                                <b style="vertical-align: middle"><?php echo $row['sender']; ?></b>
+                                <a href="/profile.php?id=<?php echo getUserFromName($row['sender'], $conn)['id']?>" style="text-decoration: none">
+                                    <img style="vertical-align: middle" width="24" height="24" src="/dynamic/pfp/<?php echo getPFPFromUser($row['sender'], $conn); ?>">
+                                    <b style="vertical-align: middle"><?php echo $row['sender']; ?></b>
+                                </a>
                             </td>
                             <td><span style="text-align: right;float: right"><?php echo getUserFromName($row['sender'], $conn)['lastlogin']?></span></td>
                         </tr>
@@ -159,8 +161,10 @@
                         ?>
                         <tr>
                             <td>
-                                <img style="vertical-align: middle" width="24" height="24" src="/dynamic/pfp/<?php echo getPFPFromUser($row['reciever'], $conn); ?>">
-                                <b style="vertical-align: middle"><?php echo $row['reciever']; ?></b>
+                                <a href="/profile.php?id=<?php echo getUserFromName($row['reciever'], $conn)['id']?>" style="text-decoration: none">
+                                    <img style="vertical-align: middle" width="24" height="24" src="/dynamic/pfp/<?php echo getPFPFromUser($row['reciever'], $conn); ?>">
+                                    <b style="vertical-align: middle"><?php echo $row['reciever']; ?></b>
+                                </a>
                             </td>
                             <td><span style="text-align: right;float: right"><?php echo getUserFromName($row['reciever'], $conn)['lastlogin']?></span></td>
                         </tr>
