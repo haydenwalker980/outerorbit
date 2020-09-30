@@ -62,7 +62,7 @@
                 <table id="replies">
                     <tr>
                         <th style="width: 65%;">Title</th>
-                        <th style="width: 25%;">Replies</th>
+                        <th style="width: 20%;">Author</th>
                         <th style="width: 10%;">Last Reply</th>
                     </tr>
                     <?php 
@@ -74,7 +74,14 @@
                     ?>
                         <tr>
                             <td><b><a href="thread.php?id=<?php echo $row['id']; ?>"><?php echo $row['title']; ?></a></b></td>
-                            <td><a href="/profile.php?id=<?php echo getIDFromUser($row['author'], $conn); ?>"><img style="float: left; height: 3em; width: 3em;" src="/dynamic/pfp/<?php echo getPFPFromUser($row['author'], $conn); ?>"><br><b><?php echo $row['author']; ?></b></a></center></td>
+                            <td>
+                                <center>
+                                <a href="/profile.php?id=<?php echo getIDFromUser($row['author'], $conn); ?>">
+                                    <img style="height: 3em; width: 3em;" src="/dynamic/pfp/<?php echo getPFPFromUser($row['author'], $conn); ?>"><br>
+                                    <b><?php echo $row['author']; ?></b>
+                                </a>
+                                </center>
+                            </td>
                             <td><?php echo $row['lastmodified']; ?></td>
                         </tr>
                     <?php } ?>
