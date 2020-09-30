@@ -29,7 +29,7 @@
             <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/header.php"); ?>
             <div class="padding">
                 <span id="padding10">
-                    <small>SpaceMy / Incoming PMs</small>
+                    <small><a href="/">SpaceMy</a> / <a href="/pms.php">Incoming PMs</a></small>
                 </span><br>
                 <div class="customtopLeft">  
                     <div class="splashBlue">

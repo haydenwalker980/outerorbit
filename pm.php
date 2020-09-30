@@ -46,7 +46,7 @@
             <br>
             <div class="padding">
                 <span id="padding10">
-                    <small>SpaceMy / PM / <?php echo $user['username']; ?></small>
+                    <small><a href="/">SpaceMy</a> / <a href="/users.php">Profiles</a> / <a href="/profile.php?id=<?php echo $_GET['id']?>"><?php echo $user['username']; ?></a> / <a href="/pm.php?id=<?php echo $_GET['id']?>">Send PM</a></small>
                 </span><br>
                 <div class="customtopLeft">  
                     <div class="splashBlue">

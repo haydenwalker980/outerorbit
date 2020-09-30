@@ -1,0 +1,6 @@
+# Composer files/dirs
+/vendor/
+/composer.lock
+
+# SpaceMy2 config file
+/static/config.inc.php

@@ -14,7 +14,7 @@
             <br>
             
             <div class="padding">
-                <small>SpaceMy / Groups / Index</small><br>
+                <small><a href="/">SpaceMy</a> / <a href="/groups/">Groups</a></small><br>
                 <h1 id="noMargin">Groups</h1>Sort by:: <b>Newest</b><br><a href="new.php">New Group</a><br><br>
                 <table>
                     <tr>

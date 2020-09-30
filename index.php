@@ -43,8 +43,8 @@
             }
 
             ul {
-                list-style-type: none;
-                padding: 2px;
+                list-style-type: square;
+                padding-left: 20px;
                 margin: 0px;
             }
         </style>
@@ -58,6 +58,14 @@
                     <div class="hero">
                         <h1 id="noMargin">spacemy.xyz</h1>
                         A opensourced passion project to replicate/mimmic the feel and customizability of 2008 MySpace. This is currently heavily under development, so expect some bugs or security bugs once in a while.<br><br><a href="register.php"><button>Join</button></a>
+                    </div><br>
+                    <div class="splashBlue">
+                        Always make sure you're visiting the real spacemy.xyz!
+                        <ul>
+                            <li>Check the URL in your browser.</li>
+                            <li>Make sure it begins with http://www.spacemy.xyz/</li>
+                            <li>If ANY OTHER PAGE asks for your info, DON'T LOG IN!</li>
+                        </ul>
                     </div>
                     <br>
                     <div class="login">
@@ -123,7 +131,7 @@
                 </div>
             </div>
             <div class="padding10">
-                <table class="cols" style="margin-top: 580px;">
+                <table class="cols" style="margin-top: 780px;">
                     <tbody>
                         <tr>
                             <td>

@@ -11,7 +11,7 @@
         <script src='https://www.google.com/recaptcha/api.js' async defer></script>
         <script src="/onLogin.js"></script>
         <meta property="og:title" content="<?php echo $blog['subject'] . " by " . $blog['author']; ?>" />
-        <meta property="og:description" content="<?php echo $blog['message']; ?>" />
+        <meta property="og:description" content="<?php echo preg_replace("/\"/", "&quot;", $blog['message']); ?>" />
         <meta http-equiv="Content-Security-Policy" content="default-src 'self' *.google.com *.gstatic.com; img-src 'self' images.weserv.nl; style-src 'self' 'unsafe-inline';">
         <style>
             .customtopLeft {
@@ -49,7 +49,7 @@
             <br>
             <div class="padding">
                 <span id="padding10">
-                    <small>SpaceMy / Blog / <?php echo $blog['subject']; ?></small>
+                    <small><a href="/">SpaceMy</a> / <a href="/blogs/">Blogs</a> / <a href="/blogs/view.php?id=<?php echo $_GET['id']?>"><?php echo $blog['subject']; ?></a></small>
                 </span><br>
                 <div class="customtopLeft">  
                     <div class="splashBlue">

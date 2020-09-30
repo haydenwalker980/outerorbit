@@ -27,7 +27,7 @@
         }
         ?>
         <meta property="og:title" content="<?php echo $group['name']; ?>" />
-        <meta property="og:description" content="<?php echo $group['description']; ?>" />
+        <meta property="og:description" content="<?php echo preg_replace("/\"/", "&quot;", $group['description']); ?>" />
         <meta property="og:image" content="https://spacemy.xyz/dynamic/groups/<?php echo $group['pic']; ?>" />
         <style>
             .customtopLeft {
@@ -49,7 +49,7 @@
             <br>
             <div class="padding">
                 <span id="padding10">
-                    <small>SpaceMy / Groups / <?php echo htmlspecialchars($group['name']); ?></small>
+                    <small><a href="/">SpaceMy</a> / <a href="/groups/">Groups</a> / <a href="/groups/view.php?id=<?php echo $_GET['id']?>"><?php echo htmlspecialchars($group['name']); ?></a></small>
                 </span><br>
                 <div class="customtopLeft">  
                     <div class="splashBlue">

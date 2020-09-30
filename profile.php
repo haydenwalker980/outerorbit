@@ -13,7 +13,7 @@
         <meta http-equiv="Content-Security-Policy" content="default-src 'self' youtube.com *.google.com *.gstatic.com; img-src 'self' youtube.com images.weserv.nl; style-src 'self' youtube.com 'unsafe-inline';">
         <?php $user = getUserFromId((int)$_GET['id'], $conn); ?>
         <meta property="og:title" content="<?php echo $user['username']; ?>" />
-        <meta property="og:description" content="<?php echo $user['bio']; ?>" />
+        <meta property="og:description" content="<?php echo preg_replace("/\"/", "&quot;", $user['bio']); ?>" />
         <meta property="og:image" content="https://www.spacemy.xyz/dynamic/pfp/<?php echo $user['pfp']; ?>" />
     </head>
     <body>
@@ -44,7 +44,7 @@
             <br>
             <div class="padding">
                 <span id="padding10">
-                    <small>SpaceMy / Profile / <?php echo $user['username']; ?></small>
+                    <small><a href="/">SpaceMy</a> / <a href="/users.php">Profiles</a> / <a href="/profile.php?id=<?php echo $_GET['id']?>"><?php echo $user['username']; ?></a></small>
                 </span><br>
                 <div class="topLeft">  
                     <center>
