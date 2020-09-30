@@ -34,6 +34,7 @@ function getUserFromUsername($username, $connection) {
 </div>
 <div class="headerBottom">
     <small>
+        <a href="/forums">Forums</a> &bull;
         <a href="/groups">Groups</a> &bull;
         <a href="/blogs">Blogs</a> &bull;
         <a href="/pms.php">PMs</a> &bull;
