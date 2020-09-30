@@ -28,7 +28,12 @@
             <br>
             
             <div class="padding">
-                <small>SpaceMy / Forums / Categories</small><br><br>
+                <small>
+                    <a href="/">SpaceMy</a> /
+                    <a href="/forums/">Forums</a> /
+                    <a href="/forums/category.php?id=<?php echo $thread['toid']?>"><?php echo getCategoryFromID((int)$thread['toid'], $conn)['name']?></a> /
+                    <a href="/forums/thread.php?id=<?php echo $_GET['id']?>"><?php echo $thread['title']?></a>
+                </small><br><br>
                 <?php 
                     if($_SERVER['REQUEST_METHOD'] == 'POST') {
                         if(!isset($_SESSION['siteusername'])){ $error = "you are not logged in"; goto skipcomment; }
