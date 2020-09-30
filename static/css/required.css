@@ -43,9 +43,10 @@ body {
     color: white;
 }
 
-#floatRight {
+#floatRight, .floatRight {
     float: right;
 }
+.floatLeft {float:left;}
 
 .container {
     width: 40em;

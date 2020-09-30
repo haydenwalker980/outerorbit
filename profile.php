@@ -5,8 +5,9 @@
 <html>
     <head>
         <title><?php echo $config['pr_title']; ?></title>
-        <link rel="stylesheet" href="/static/css/required.css"> 
-        <link rel="stylesheet" href="/static/css/profile.css"> 
+        <link rel="stylesheet" href="/static/css/required.css">
+        <link rel="stylesheet" href="/static/css/profile.css">
+        <link rel="stylesheet" href="/static/css/table3.css">
         <link rel="stylesheet" href="/lib/getCSS.php?id=<?php echo (int)$_GET['id']; ?>"> 
         <script src='https://www.google.com/recaptcha/api.js' async defer></script>
         <script src="/onLogin.js"></script>
@@ -129,15 +130,25 @@
                     <div class="about">
                         <b><?php echo htmlspecialchars($user['username']); ?>'s Friends</b>
                     </div><br>
-                    <div class="grid-container">
+                    <table id="friends">
+                        <tbody>
+                            <tr>
+                                <th style="width: 60%">User</th>
+                                <th style="width: 40%;text-align:right">Last Login</th>
+                            </tr>
                         <?php 
-                                $stmt = $conn->prepare("SELECT * FROM friends WHERE reciever = ? AND status = 'a'");
-                                $stmt->bind_param("s", $user['username']);
+                            $stmt = $conn->prepare("SELECT * FROM friends WHERE reciever = ? AND status = 'a'");
+                            $stmt->bind_param("s", $user['username']);
                             $stmt->execute();
                             $result = $stmt->get_result();
-                            while($row = $result->fetch_assoc()) {
-                        ?>
-                            <div class="item1"><a href="/profile.php?id=<?php echo getIDFromUser($row['sender'], $conn); ?>"><div><b><center><?php echo $row['sender']; ?></center></b></div><img src="/dynamic/pfp/<?php echo getPFPFromUser($row['sender'], $conn); ?>"></a><br></div>
+                            while($row = $result->fetch_assoc()) { ?>
+                        <tr>
+                            <td>
+                                <img style="vertical-align: middle" src="/dynamic/pfp/<?php echo getPFPFromUser($row['sender'], $conn); ?>">
+                                <b style="vertical-align: middle"><?php echo $row['sender']; ?></b>
+                            </td>
+                            <td><span style="text-align: right;float: right"><?php echo getUserFromName($row['sender'], $conn)['lastlogin']?></span></td>
+                        </tr>
                         <?php } ?>
                         <?php 
                             $stmt = $conn->prepare("SELECT * FROM friends WHERE sender = ? AND status = 'a'");
@@ -146,9 +157,16 @@
                             $result = $stmt->get_result();
                             while($row = $result->fetch_assoc()) {
                         ?>
-                            <div class="item1"><a href="/profile.php?id=<?php echo getIDFromUser($row['reciever'], $conn); ?>"><div><b><center><?php echo $row['reciever']; ?></center></b></div><img src="/dynamic/pfp/<?php echo getPFPFromUser($row['reciever'], $conn); ?>"></a><br></div>
+                        <tr>
+                            <td>
+                                <img style="vertical-align: middle" src="/dynamic/pfp/<?php echo getPFPFromUser($row['reciever'], $conn); ?>">
+                                <b style="vertical-align: middle"><?php echo $row['reciever']; ?></b>
+                            </td>
+                            <td><span style="text-align: right;float: right"><?php echo getUserFromName($row['reciever'], $conn)['lastlogin']?></span></td>
+                        </tr>
                         <?php } ?>
-                    </div>
+                        </tbody>
+                    </table><br>
                     <div class="about">
                         <b><?php echo htmlspecialchars($user['username']); ?>'s comments</b>
                     </div><br>
