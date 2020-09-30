@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 29, 2020 at 06:34 PM
+-- Generation Time: Sep 30, 2020 at 01:00 AM
 -- Server version: 5.7.31-0ubuntu0.18.04.1
 -- PHP Version: 7.2.24-0ubuntu0.18.04.6
 
@@ -47,6 +47,20 @@ CREATE TABLE `blogs` (
   `subject` varchar(100) NOT NULL,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `visiblity` varchar(255) NOT NULL DEFAULT 'Visible'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `categories`
+--
+
+CREATE TABLE `categories` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `description` varchar(255) NOT NULL,
+  `lastmodified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -124,6 +138,36 @@ CREATE TABLE `pms` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `reply`
+--
+
+CREATE TABLE `reply` (
+  `id` int(11) NOT NULL,
+  `toid` int(11) NOT NULL,
+  `author` varchar(255) NOT NULL,
+  `text` varchar(500) NOT NULL,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `threads`
+--
+
+CREATE TABLE `threads` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `toid` int(11) NOT NULL,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lastmodified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `message` varchar(1000) NOT NULL,
+  `author` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -165,6 +209,13 @@ ALTER TABLE `blogs`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id` (`id`);
+
+--
 -- Indexes for table `comments`
 --
 ALTER TABLE `comments`
@@ -195,6 +246,18 @@ ALTER TABLE `pms`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `reply`
+--
+ALTER TABLE `reply`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `threads`
+--
+ALTER TABLE `threads`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -213,6 +276,11 @@ ALTER TABLE `blogcomments`
 -- AUTO_INCREMENT for table `blogs`
 --
 ALTER TABLE `blogs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `categories`
+--
+ALTER TABLE `categories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `comments`
@@ -238,6 +306,16 @@ ALTER TABLE `groups`
 -- AUTO_INCREMENT for table `pms`
 --
 ALTER TABLE `pms`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `reply`
+--
+ALTER TABLE `reply`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `threads`
+--
+ALTER TABLE `threads`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `users`
