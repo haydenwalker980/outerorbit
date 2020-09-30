@@ -144,7 +144,7 @@
                             while($row = $result->fetch_assoc()) { ?>
                         <tr>
                             <td>
-                                <img style="vertical-align: middle" src="/dynamic/pfp/<?php echo getPFPFromUser($row['sender'], $conn); ?>">
+                                <img style="vertical-align: middle" width="24" height="24" src="/dynamic/pfp/<?php echo getPFPFromUser($row['sender'], $conn); ?>">
                                 <b style="vertical-align: middle"><?php echo $row['sender']; ?></b>
                             </td>
                             <td><span style="text-align: right;float: right"><?php echo getUserFromName($row['sender'], $conn)['lastlogin']?></span></td>
