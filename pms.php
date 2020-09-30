@@ -26,7 +26,22 @@
     </head>
     <body>
         <div class="container">
-            <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/header.php"); ?>
+            <?php
+                $stmt = $conn->prepare("SELECT * FROM `pms` WHERE `sto` = ? AND `isRead` = 0");
+                $stmt->bind_param("s", $_SESSION['siteusername']);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                while($row = $result->fetch_assoc()) {
+                    $substmt = $conn->prepare("UPDATE `pms` SET `isRead` = 1 WHERE `id` = ?");
+                    $substmt->bind_param("i", $row['id']);
+                    $substmt->execute();
+                    $substmt->close();
+                }
+                $stmt->close();
+
+                require($_SERVER['DOCUMENT_ROOT'] . "/static/header.php");
+            ?>
             <div class="padding">
                 <span id="padding10">
                     <small><a href="/">SpaceMy</a> / <a href="/pms.php">Incoming PMs</a></small>
