@@ -12,7 +12,15 @@ function getUserFromUsername($username, $connection) {
 }
 ?>
 <div class="headerTop">
-    <a href="/index.php"><img src="/static/spacemy.png"></a> &nbsp; <small id="floatRight"><a href="/login.php">Login</a> &bull; <a href="/register.php">Register</a>&nbsp;&nbsp;</small><br>
+    <a href="/index.php"><img src="/static/spacemy.png"></a>
+    <small id="floatRight">
+        <?php if(isset($_SESSION['siteusername'])) {?>
+        <a href="/logout.php">Logout</a>
+        <?php } else {?>
+        <a href="/login.php">Login</a> &bull;
+        <a href="/register.php">Register</a>
+        <?php }?>&nbsp;&nbsp;
+    </small><br>
     <span id="floatRight">
         <form method="get" action="/browse.php">
         <select name="searchmethod">
