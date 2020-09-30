@@ -28,7 +28,7 @@
             <br>
             
             <div class="padding">
-                <small>SpaceMy / Forums / Categories</small><br>
+                <small>SpaceMy / Forums / Categories</small><br><br>
                 <?php 
                     if($_SERVER['REQUEST_METHOD'] == 'POST') {
                         if(!isset($_SESSION['siteusername'])){ $error = "you are not logged in"; goto skipcomment; }

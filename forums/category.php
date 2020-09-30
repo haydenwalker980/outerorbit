@@ -28,7 +28,7 @@
             <br>
             
             <div class="padding">
-                <small><a href="/">SpaceMy</a> / <a href="/forums/">Forums</a> / <a href="/forums/category.php?id=<?php echo $_GET['id']?>"><?php echo $cat['name']?></a></small><br>
+                <small><a href="/">SpaceMy</a> / <a href="/forums/">Forums</a> / <a href="/forums/category.php?id=<?php echo $_GET['id']?>"><?php echo $cat['name']?></a></small><br><br>
                 <div class="splashBlue">
                     <h1 id="noMargin"><?php echo $cat['name']; ?></h1><?php echo $cat['description']; ?>
                     <?php 

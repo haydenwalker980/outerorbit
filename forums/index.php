@@ -14,7 +14,7 @@
             <br>
             
             <div class="padding">
-                <small><a href="/">SpaceMy</a> / <a href="/forums/">Forums</a></small><br>
+                <small><a href="/">SpaceMy</a> / <a href="/forums/">Forums</a></small><br><br>
                 <div class="splashBlue">
                     <h1 id="noMargin">SpaceMy Forums</h1>These are heavily under construction. Don't expect everything to completely work at this point.
                 </div><br>
