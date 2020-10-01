@@ -292,3 +292,5 @@ table {
     padding: 10px;
     border: 1px solid black;
 }
+
+#originalpost {margin-bottom: 1em;overflow: auto;}

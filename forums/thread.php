@@ -59,23 +59,21 @@
                     </form>
                 </div><br>
                 <hr>
+                <div id="originalpost">
+                    <img style="float:right;height: 5em; width: 5em;" src="/dynamic/pfp/<?php echo getPFPFromUser($thread['author'], $conn); ?>">
+                    <h2 id="noMargin" style="display: inline;"><?php echo $thread['title']?></h2> by
+                    <small>
+                        <a href="/profile.php?id=<?php echo getIDFromUser($thread['author'], $conn); ?>">
+                            <b><?php echo $thread['author']; ?></b>
+                        </a> - <?php echo $thread['date']; ?>
+                    </small><br>
+                    <?php echo parseText($thread['message']); ?><br>
+                </div>
                 <table id="replies">
                     <tr>
                         <th style="width: 20%;">Author</th>
                         <th style="width: 70%;">Text</th>
                         <th style="width: 10%;">Date</th>
-                    </tr>
-                    <tr>
-                        <td>
-							<center>
-                                <a href="/profile.php?id=<?php echo getIDFromUser($thread['author'], $conn); ?>">
-                                    <img style="height: 3em; width: 3em;" src="/dynamic/pfp/<?php echo getPFPFromUser($thread['author'], $conn); ?>"><br>
-                                    <b><?php echo $thread['author']; ?></b>
-                                </a>
-                            </center>
-                        </td>
-                        <td><?php echo parseText($thread['message']); ?></td>
-                        <td><?php echo $thread['date']; ?></td>
                     </tr>
                     <?php 
                         $stmt = $conn->prepare("SELECT * FROM reply WHERE toid = ?");
