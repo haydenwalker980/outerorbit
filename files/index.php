@@ -137,7 +137,7 @@
                         while($row = $result->fetch_assoc()) {?>
                         <li>
                             <a href="/dynamic/files/<?php echo $row['filename']?>"><?php echo $row['filename']?></a>
-                            <small>[<?php FileSizeConvert(filesize("../dynamic/files/" . $row['filename']))?>]</small><br>
+                            <small>[<?php echo FileSizeConvert(filesize("../dynamic/files/" . $row['filename']))?>]</small><br>
                         </li>
                         <?php }
                         $stmt->close();
