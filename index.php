@@ -83,7 +83,114 @@
                             <li><span id="blogPost"><?php echo htmlspecialchars($row['subject']); ?> by <b><?php echo htmlspecialchars($row['author']); ?></b> [<a href="/blogs/view.php?id=<?php echo $row['id']; ?>">+</a>]</span></span></li>
                         <?php } ?>
                         </ul>
-                    </div>
+                    </div><br>
+                    <div class="section" id="splash_greybox">
+                        <span id="ctl00_Main_SplashDisplay_Splash">
+                            <script type="text/javascript">
+                                MySpaceRes.Header = {"Cancel":"Cancel / Cancelación","Continue":"Continue / Continuar"};
+                            </script>
+                        <style>
+                            #splash_greybox {height: auto;border:none;background-color:transparent;}
+                            #splash_graybox {background-color:#F2F5F7; border:1px solid #D0E4FD; padding-bottom:1px;}
+                            #splash_graybox {width:440px;}
+                            #splash_graybox .grayboxtable a {height:16px;padding-left:2px;font-family: Arial;font-weight:normal; font-size:12px;cursor:hand;}
+                            #splash_graybox .grayboxtable a span {height:18px;vertical-align:middle;}
+                            #splash_graybox {padding-top:4px;padding-bottom:2px;}
+                            #splash_graybox .grayboxtable col {width:110px;}
+                            #splash_graybox .grayboxtable td {padding-bottom:2px; _padding-bottom:0px;}
+
+                            .gbicon
+                            {
+                                background:transparent url(/static/graybox006.gif) no-repeat scroll 0%;
+                                float:left;
+                                height:16px;
+                                margin:0;
+                                padding:0;
+                                vertical-align:middle;
+                                width:24px;
+                            }
+
+                            #gbitem { position: relative; width: 98%; background:none !important; padding:2px !important; clear:both; }
+                            #gbitem a { font-family: Arial, Verdana; color: #1f1f7a; font-size: 11px; }
+                            .gbicon { position: relative; }
+
+                            #imgbicon {background-position:0px -5px;}
+                            #profileeditorgbicon {background-position:0pt -23px;}
+                            #blogsgbicon {background-position:0pt -42px;}
+                            #chatroomsgbicon {background-position:0pt -61px;}
+                            #classifiedsgbicon {background-position:0pt -79px;}
+                            #eventsgbicon {background-position:0pt -97px;}
+                            #forumsgbicon {background-position:0pt -116px;}
+                            #groupsgbicon {background-position:0pt -134px;}
+                            #impactgbicon {background-position:0pt -152px;}
+                            #jobsgbicon {background-position:0pt -170px;}
+                            #newsgbicon {background-position:0pt -188px;}
+                            #pollsgbicon {background-position:0pt -568px;}
+                            #weathergbicon {background-position:0pt -205px;}
+                            #booksgbicon {background-position:0pt -221px;}
+                            #comedygbicon {background-position:0pt -240px;}
+                            #downloadsgbicon {background-position:0pt -258px;}
+                            #filmmakersgbicon {background-position:0pt -277px;}
+                            #horoscopesgbicon {background-position:0pt -295px;}
+                            #moviesgbicon {background-position:0pt -313px;}
+                            #musicgbicon {background-position:0pt -334px;}
+                            #musicvideosgbicon {background-position:0pt -353px;}
+                            #myspacetvgbicon {background-position:0pt -371px;}
+                            #sportsgbicon {background-position:0pt -387px;}
+                            #tvondemandgbicon {background-position:0pt -404px;}
+                            #mobilegbicon {background-position:0pt -424px;}
+                            #ringtonesgbicon {background-position:0pt -442px;}
+                            #textalertsgbicon {background-position:0pt -459px;}
+                            #findclassmatesgbicon {background-position:0pt -479px;}
+                            #grademyprofgbicon {background-position:0pt -497px;}
+                            #latinogbicon {background-position:0pt -517px;}
+                            #mobilegamegbicon {background-position:0pt -534px;}
+                            #celebritygbicon {background-position:0pt -590px;}
+                            </style>
+
+
+
+                        <div id="splash_graybox">
+
+                        <table class="grayboxtable" cellspacing="0" cellpadding="0" border="0">
+                        <colgroup>
+                        <col><col><col><col>
+                        </colgroup>
+                            <tbody><tr>
+                            <td><a href="forum">
+                                <div class="gbicon" id="forumsgbicon"></div>
+                                <span>Forum</span></a></td>
+                            <td><a href="jukebox.php">
+                                <div class="gbicon" id="musicgbicon"></div>
+                                <span>Jukebox</span></a></td>
+                            <td><a href="groups">
+                                <div class="gbicon" id="findclassmatesgbicon"></div>
+                                <span>Groups</span></a></td>
+                            <td><a href="blogs">
+                                <div class="gbicon" id="chatroomsgbicon"></div>
+                                <span>Blogs</span></a></td>
+                            </tr>
+                            <tr>
+
+                            <td style="DISPLAY: none"><a href="files">
+                                <div class="gbicon" id="groupsgbicon"></div>
+                                <span>Files</span></a></td>
+                            <td><a href="pms.php">
+                                <div class="gbicon" id="comedygbicon"></div>
+                                <span>PMs</span></a></td>
+                            <td><a href="friends">
+                                <div class="gbicon" id="impactgbicon"></div>
+                                <span>Friends</span></a></td>
+                            <td><a href="users.php">
+                                <div class="gbicon" id="imgbicon"></div>
+                                <span>Users</span></a></td>
+                            </tr>
+                        </tbody></table>
+                        </div>
+                        <div class="clear"></div>
+                        <!-- End CMS Content -->
+                        </span>
+                            </div>
                 </div>
             </div>
             <div class="customtopRight">
@@ -131,7 +238,7 @@
                 </div>
             </div>
             <div class="padding10">
-                <table class="cols" style="margin-top: 780px;">
+                <table class="cols" style="margin-top: 680px;">
                     <tbody>
                         <tr>
                             <td>
