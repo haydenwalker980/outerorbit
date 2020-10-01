@@ -128,16 +128,21 @@
                         </form><br>
                     </div><br>
                     <b>Uploaded Files</b> <small>[<?php if(!empty($total)) { echo FileSizeConvert($total); } else { echo "0B";} ?>/10MB]</small><br>
+                    <ul>
                     <?php 
                         $stmt = $conn->prepare("SELECT * FROM files WHERE owner = ?");
                         $stmt->bind_param("s", $_SESSION['siteusername']);
                         $stmt->execute();
                         $result = $stmt->get_result();
-                        while($row = $result->fetch_assoc()) {
-                            echo "<a href='/dynamic/files/" . $row['filename'] . "'>" . $row['filename'] . "</a> <small>[" . FileSizeConvert(filesize("../dynamic/files/" . $row['filename'])) . "]</small><br>";
-                        }
+                        while($row = $result->fetch_assoc()) {?>
+                        <li>
+                            <a href="/dynamic/files/<?php echo $row['filename']?>"><?php echo $row['filename']?></a>
+                            <small>[<?php FileSizeConvert(filesize("../dynamic/files/" . $row['filename']))?>]</small><br>
+                        </li>
+                        <?php }
                         $stmt->close();
                     ?>
+                    </ul>
                 </div>
             </div>
         </div>
