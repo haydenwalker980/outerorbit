@@ -60,7 +60,7 @@
                 </div><br>
                 <hr>
                 <div id="originalpost">
-                    <img style="float:right;height: 5em; width: 5em;" src="/dynamic/pfp/<?php echo getPFPFromUser($thread['author'], $conn); ?>">
+                    <img style="float:right;height: 5em; width: 5em;padding-left: 1em;" src="/dynamic/pfp/<?php echo getPFPFromUser($thread['author'], $conn); ?>">
                     <h2 id="noMargin" style="display: inline;"><?php echo $thread['title']?></h2> by
                     <small>
                         <a href="/profile.php?id=<?php echo getIDFromUser($thread['author'], $conn); ?>">
