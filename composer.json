@@ -1,5 +1,6 @@
 {
     "require": {
-        "smith197/steamauthentication": "^4.0"
+        "smith197/steamauthentication": "^4.0",
+        "erusev/parsedown": "^1.7"
     }
 }
