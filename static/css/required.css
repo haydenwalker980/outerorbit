@@ -6,7 +6,7 @@ body {
 }
 
 .headerTop {
-    background-color: #002C99;
+    background-color: #8B0000;
     color: white;
     padding-top: 6px;
     padding-bottom: 6px;
@@ -39,7 +39,7 @@ body {
     padding-left: 3px;
     padding-top: 3px;
     padding-bottom: 3px;
-    background-color: #6699cc;
+    background-color: #B45A5A;
     color: white;
 }
 
@@ -48,8 +48,17 @@ body {
 }
 .floatLeft {float:left;}
 
+.container a {
+    text-decoration: none;
+}
+
+.container a:hover {
+    color: #C00;
+    text-decoration: underline;
+}
+
 .container {
-    width: 40em;
+    width: 50em;
     margin: auto;
     background-color: white;
     overflow: auto;
@@ -273,7 +282,7 @@ table {
 
 .grid-container {
     display: grid;
-    grid-template-columns: 9em 9em 9em 9em;
+    grid-template-columns: 11.5em 11.5em 11.5em 11.5em;
     grid-gap: 10px;
     padding: 10px;
 }
@@ -284,8 +293,8 @@ table {
 }
 
 .grid-container > div img {
-    width: 8em;
-    height: 8em;
+    width: 10em;
+    height: 10em;
 }
 
 .extended {
@@ -294,3 +303,49 @@ table {
 }
 
 #originalpost {margin-bottom: 1em;overflow: auto;}
+
+div.groupssidelinks {
+    width: 154px;
+    padding: 3px;
+    margin: 38px 0 2em;
+    background-color: #B1D0F0;
+}
+
+div.groupssidelinks ul {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+div.groupssidelinks li {
+    margin: 0;
+    padding: .5em 0;
+    list-style: none;
+    background-color: #D5E8FB;
+    border-top: 3px solid #fff;
+    border-left: 3px solid #fff;
+    border-right: 3px solid #fff;
+    text-align: center;
+}
+
+div.groupssidelinks a {
+    color: rgb(83, 83, 255);
+}
+
+.blog {
+    background-color: #F9F9F9;
+    padding-bottom: 2em;
+    border-bottom: 1px solid #ccc;
+    overflow: auto;
+}
+
+#blogPost, #blogPost small {
+    padding-left: 5px;
+}
+
+#splash_graybox {
+    background-color: #F2F5F7;
+    border: 1px solid #D0E4FD;
+    padding-bottom: 1px;
+}
+

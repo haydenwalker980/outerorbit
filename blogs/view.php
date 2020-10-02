@@ -55,7 +55,7 @@
                     <div class="splashBlue">
                         Remember to make sure that your reply does not break the terms of service!
                     </div><br>
-                    <center>Written by <b><?php echo htmlspecialchars($blog['author']); ?></b><br><img style="width: 10em;" src="/dynamic/pfp/<?php echo getPFPFromUser($blog['author'], $conn) ?>"></center><br>
+                    <center>Written by <b><a href="/profile.php?id=<?php echo getIDFromUser($blog['author'], $conn); ?>"><?php echo htmlspecialchars($blog['author']); ?></a></b><br><img style="width: 10em;" src="/dynamic/pfp/<?php echo getPFPFromUser($blog['author'], $conn) ?>"></center><br>
                 </div>
                 <div class="customtopRight">
                     <h1 id="noMargin"><?php echo $blog['subject']; ?></h1>

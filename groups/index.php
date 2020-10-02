@@ -7,51 +7,78 @@
         <title><?php echo $config['pr_title']; ?></title>
         <link rel="stylesheet" href="/static/css/required.css"> 
         <link rel="stylesheet" href="/static/css/table2.css"> 
+        <style>
+            .customtopLeft {
+                float: left;
+                width: calc( 22% - 20px );
+                padding: 10px;
+            }
+
+            .customtopRight {
+                float: right;
+                width: calc( 78% - 20px );
+                padding: 10px;
+            }
+        </style>
     </head>
     <body>
         <div class="container">
             <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/header.php"); ?>
             <br>
-            
             <div class="padding">
-                <small><a href="/">SpaceMy</a> / <a href="/groups/">Groups</a></small><br>
-                <h1 id="noMargin">Groups</h1>Sort by:: <b>Newest</b><br><a href="new.php">New Group</a><br><br>
-                <table>
-                    <tr>
-                        <th>Icon</th>
-                        <th>Info</th>
-                        <th>Creator</th>
-                    </tr>
-                    <?php 
-                        $stmt = $conn->prepare("SELECT * FROM groups WHERE visiblity = 'Visible' ORDER BY id DESC");
-                        $stmt->execute();
-                        $result = $stmt->get_result();
+                <div class="customtopLeft">  
+                    <b><small>
+                        <div class="groupssidelinks">
+                            <ul>
+                                <li><a href="">Groups Home</a></li>
+                                <li><a href="/edit/">My Groups</a></li>
+                                <li><a href="new.php">Create Group</a></li>
+                                <li class="last"><a href="">Search Groups</a></li>
+                            </ul>
+                        </div>
+                    </small></b>
+                </div>
 
-                        while($row = $result->fetch_assoc()) { 
-                    ?>
+                <div class="customtopRight">  
+                    <h1 id="noMargin">Groups Home</h1>Sort by:: <b>Newest</b><br>
+                    <small><a href="/">SpaceMy</a> / <a href="/groups/">Groups</a></small><br><br>
+                    <table>
                         <tr>
-                            <td><img style="height: 4em; width: 4em;" src="/dynamic/groups/<?php echo $row['pic']; ?>"></td>
-                            <td>
-                                <b><?php echo $row['name']; ?></b>
-                                <span id="floatRight" style="text-align:right;">
-                                    <?php echo $row['date']; ?><br>
-                                    <?php
-                                        $stmt = $conn->prepare("SELECT * FROM `users` WHERE `currentgroup` = ?");
-                                        $stmt->bind_param('i', $row['id']);
-                                        $stmt->execute();
-                                        $stmt->store_result();
-                                        $membercount = $stmt->num_rows();
-                                        echo $membercount . " member" . ($membercount === 1 ? "" : "s");
-                                        $stmt->close();
-                                    ?>
-                                </span><br>
-                                <?php echo parseText($row['description']); ?><br>
-                                <a href="view.php?id=<?php echo $row['id']; ?>"><button>More Info</button></a>
-                            </td>
-                            <td><center><a href="/profile.php?id=<?php echo getIDFromUser($row['owner'], $conn); ?>"><div><b><?php echo $row['owner']; ?></b></div><img style="height: 4em; width: 4em;" src="/dynamic/pfp/<?php echo getPFPFromUser($row['owner'], $conn); ?>"></a></center></td>
+                            <th>Icon</th>
+                            <th>Info</th>
+                            <th>Creator</th>
                         </tr>
-                    <?php } ?>
-                </table>
+                        <?php 
+                            $stmt = $conn->prepare("SELECT * FROM groups WHERE visiblity = 'Visible' ORDER BY id DESC");
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+
+                            while($row = $result->fetch_assoc()) { 
+                        ?>
+                            <tr>
+                                <td><img style="height: 4em; width: 4em;" src="/dynamic/groups/<?php echo $row['pic']; ?>"></td>
+                                <td>
+                                    <b><?php echo $row['name']; ?></b>
+                                    <span id="floatRight" style="text-align:right;">
+                                        <?php echo $row['date']; ?><br>
+                                        <?php
+                                            $stmt = $conn->prepare("SELECT * FROM `users` WHERE `currentgroup` = ?");
+                                            $stmt->bind_param('i', $row['id']);
+                                            $stmt->execute();
+                                            $stmt->store_result();
+                                            $membercount = $stmt->num_rows();
+                                            echo $membercount . " member" . ($membercount === 1 ? "" : "s");
+                                            $stmt->close();
+                                        ?>
+                                    </span><br>
+                                    <?php echo parseText($row['description']); ?><br>
+                                    <a href="view.php?id=<?php echo $row['id']; ?>"><button>More Info</button></a>
+                                </td>
+                                <td><center><a href="/profile.php?id=<?php echo getIDFromUser($row['owner'], $conn); ?>"><div><b><?php echo $row['owner']; ?></b></div><img style="height: 4em; width: 4em;" src="/dynamic/pfp/<?php echo getPFPFromUser($row['owner'], $conn); ?>"></a></center></td>
+                            </tr>
+                        <?php } ?>
+                    </table>
+                </div>
             </div>
         </div>
         <br>
