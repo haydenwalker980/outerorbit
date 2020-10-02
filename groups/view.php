@@ -10,8 +10,9 @@
         <script src="/onLogin.js"></script>
         
         <?php $group = getGroupFromId((int)$_GET['id'], $conn); 
+        if($_SESSION['siteusername'] == $group['owner']) { $ownsGroup = true; } else { $ownsGroup = false; }
         
-        if($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['comment']) {
             if(!isset($_SESSION['siteusername'])){ $error = "you are not logged in"; goto skipcomment; }
             if(!$_POST['comment']){ $error = "your comment cannot be blank"; goto skipcomment; }
             if(strlen($_POST['comment']) > 500){ $error = "your comment must be shorter than 500 characters"; goto skipcomment; }
@@ -23,7 +24,9 @@
             $text = htmlspecialchars($_POST['comment']);
             $stmt->execute();
             $stmt->close();
-            skipcomment:
+            skipcomment: 
+        } else if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['announce']) {
+            echo "q";
         }
         ?>
         <meta property="og:title" content="<?php echo $group['name']; ?>" />
@@ -32,13 +35,13 @@
         <style>
             .customtopLeft {
                 float: left;
-                width: calc( 40% - 20px );
+                width: calc( 22% - 20px );
                 padding: 10px;
             }
 
             .customtopRight {
                 float: right;
-                width: calc( 60% - 20px );
+                width: calc( 78% - 20px );
                 padding: 10px;
             }
         </style>
@@ -52,6 +55,16 @@
                     <small><a href="/">SpaceMy</a> / <a href="/groups/">Groups</a> / <a href="/groups/view.php?id=<?php echo $_GET['id']?>"><?php echo htmlspecialchars($group['name']); ?></a></small>
                 </span><br>
                 <div class="customtopLeft">  
+                    <b><small>
+                        <div class="groupssidelinks">
+                            <ul>
+                                <li><a href="index.php">Groups Home</a></li>
+                                <li><a href="/edit/">My Groups</a></li>
+                                <li><a href="new.php">Create Group</a></li>
+                                <li class="last"><a href="">Search Groups</a></li>
+                            </ul>
+                        </div>
+                    </small></b><br>
                     <div class="splashBlue">
                         Remember to make sure that your reply is not innapropriate! Have fun.
                     </div><br>
@@ -60,7 +73,8 @@
                 </div>
                 <div class="customtopRight">
                     <div class="splashBlue">
-                        <?php echo htmlspecialchars($group['description']); ?>
+                        <h2 id="noMargin">Group Description</h2>
+                        <?php echo parseText($group['description']); ?>
                     </div><br>
                     <div class="splashBlue">
                         <b>Members</b><br>
@@ -72,7 +86,7 @@
 
                             while($row = $result->fetch_assoc()) { 
                         ?>
-                            <a href="/profile.php?id=<?php echo getIDFromUser($row['username'], $conn); ?>"><?php echo $row['username']; ?></a><br>
+                            <a href="/profile.php?id=<?php echo getIDFromUser($row['username'], $conn); ?>"><?php echo $row['username']; ?></a> <?php if($ownsGroup == true) { echo " <a href='exile.php?id=" .  getIDFromUser($row['username'], $conn) . "'>[exile]</a>"; } ?><br>
                         <?php } ?>
                     </div><br>
                     <div class="comment">

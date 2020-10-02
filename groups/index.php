@@ -49,10 +49,56 @@
                             <th>Creator</th>
                         </tr>
                         <?php 
-                            $stmt = $conn->prepare("SELECT * FROM groups WHERE visiblity = 'Visible' ORDER BY id DESC");
-                            $stmt->execute();
-                            $result = $stmt->get_result();
+                            $total_pages = $conn->query('SELECT COUNT(*) FROM groups WHERE visiblity = "Visible"')->fetch_row()[0]; 
+                            $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
+                            $num_results_on_page = 16;
 
+                            $stmt = $conn->prepare("SELECT * FROM groups WHERE visiblity = 'Visible' LIMIT ?,?");
+                            $calc_page = ($page - 1) * $num_results_on_page;
+                            $stmt->bind_param('ii', $calc_page, $num_results_on_page);
+                            $stmt->execute();
+                            $result = $stmt->get_result();?>
+                        <div class="splashBlue">
+                        <center>
+                        <?php if (ceil($total_pages / $num_results_on_page) > 0): ?>
+                            <?php if ($page > 1): ?>
+                            <a href="index.php?page=<?php echo $page-1 ?>">Prev</a>
+                            <?php endif; ?>
+
+                            <?php if ($page > 3): ?>
+                            <a href="index.php?page=1">1</a>
+                            ...
+                            <?php endif; ?>
+
+                            <?php if ($page-2 > 0): ?><a href="index.php?page=<?php echo $page-2 ?>"><?php echo $page-2 ?></a><?php endif; ?>
+                            <?php if ($page-1 > 0): ?><a href="index.php?page=<?php echo $page-1 ?>"><?php echo $page-1 ?></a><?php endif; ?>
+
+                            <a href="index.php?page=<?php echo $page ?>"><?php echo $page ?></a>
+
+                            <?php if ($page+1 < ceil($total_pages / $num_results_on_page)+1): ?><a href="index.php?page=<?php echo $page+1 ?>"><?php echo $page+1 ?></a></li><?php endif; ?>
+                            <?php if ($page+2 < ceil($total_pages / $num_results_on_page)+1): ?><a href="index.php?page=<?php echo $page+2 ?>"><?php echo $page+2 ?></a></li><?php endif; ?>
+
+                            <?php if ($page < ceil($total_pages / $num_results_on_page)-2): ?>
+                            ...
+                            <a href="index.php?page=<?php echo ceil($total_pages / $num_results_on_page) ?>"><?php echo ceil($total_pages / $num_results_on_page) ?></a>
+                            <?php endif; ?>
+
+                            <?php if ($page < ceil($total_pages / $num_results_on_page)): ?>
+                            <a href="index.php?page=<?php echo $page+1 ?>">Next</a>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                                <br>
+                                <form method="get" action="/users.php">
+                                    <select name="searchmethod">
+                                        <option value="new">Newest</option>
+                                        <option value="old">Oldest</option>
+                                        <option value="alph">Alphabetical</option>
+                                    </select>
+                                    <input type="submit" value="Go"> (Does not work yet)
+                                </form> 
+                            </center>
+                        </div>
+                        <?php
                             while($row = $result->fetch_assoc()) { 
                         ?>
                             <tr>
