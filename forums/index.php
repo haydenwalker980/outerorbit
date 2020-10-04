@@ -6,7 +6,6 @@
     <head>
         <title><?php echo $config['pr_title']; ?></title>
         <link rel="stylesheet" href="/static/css/required.css"> 
-        <?php require($_SERVER['DOCUMENT_ROOT'] . "/lib/dark.php")?>
         <link rel="stylesheet" href="/static/css/table2.css"> 
     </head>
     <body>
@@ -15,7 +14,7 @@
             <br>
             
             <div class="padding">
-                <small><a href="/">SpaceMy</a> / <a href="/forums/">Forums</a></small><br><br>
+                <small><a href="/">SpaceMy</a> / <a href="/forums/">Forums</a></small><br>
                 <div class="splashBlue">
                     <h1 id="noMargin">SpaceMy Forums</h1>These are heavily under construction. Don't expect everything to completely work at this point.
                 </div><br>

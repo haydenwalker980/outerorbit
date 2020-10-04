@@ -12,7 +12,7 @@ function getUserFromUsername($username, $connection) {
 }
 ?>
 <div class="headerTop">
-    <a href="/index.php"><img src="/static/spacemy.png"></a>
+    <a href="/index.php"><img src="/static/spacemyfall2.png"></a>
     <small id="floatRight">
         <?php if(isset($_SESSION['siteusername'])) {?>
         <a href="/logout.php">Logout</a>
@@ -60,6 +60,7 @@ function getUserFromUsername($username, $connection) {
         <?php if (isset($_SESSION['siteusername'])) {?>
         <span id="floatRight">
             <span id="custompadding">
+                <a href="/files">Files</a> &bull;
                 <a href="/edit">Edit Items</a> &bull;
                 <a href="/manage.php">Manage User</a> &bull;
 				<a href="/profile.php?id=<?php echo(htmlspecialchars(getUserFromUsername($_SESSION['siteusername'], $conn)["id"]));?>"><?php echo($_SESSION['siteusername'])?></a>

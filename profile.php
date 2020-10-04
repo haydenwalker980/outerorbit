@@ -48,11 +48,12 @@
                     <small><a href="/">SpaceMy</a> / <a href="/users.php">Profiles</a> / <a href="/profile.php?id=<?php echo $_GET['id']?>"><?php echo $user['username']; ?></a></small>
                 </span><br>
                 <div class="topLeft">  
-                    <center>
+                        <center class="userInfo">
                         <h1 id="noMargin"><?php echo $user['username']; ?></h1>
                         <img id="pfp" src="/dynamic/pfp/<?php echo $user['pfp']; ?>"><br>
                         <audio controls><source src="/dynamic/music/<?php echo $user['music']; ?>"></audio><br>
-                    </center><br>
+                    </center>
+                    <br>
                     <div class="splashBlue">
                         <b>Gender</b> &bull; <?php echo htmlspecialchars($user['gender']); ?><br>
                         <b>Location</b> &bull; <?php echo htmlspecialchars($user['location']); ?><br>
@@ -185,7 +186,7 @@
                     <table id="userWall">
                         <tbody>
                             <?php
-                                $stmt = $conn->prepare("SELECT * FROM comments WHERE toid = ? ORDER BY id DESC");
+                                $stmt = $conn->prepare("SELECT * FROM comments WHERE toid = ? AND status = 'p' ORDER BY id DESC");
                                 $stmt->bind_param("i", $_GET['id']);
                                 $stmt->execute();
                                 $result = $stmt->get_result();
@@ -197,7 +198,24 @@
                                     <a href="profile.php?id=<?php echo getIDFromUser($row['author'], $conn); ?>"><div><b><center><?php echo $row['author']; ?></center></b></div><img src="/dynamic/pfp/<?php echo getPFPFromUser($row['author'], $conn); ?>"></a>
                                 </td>
                                 <td class="tableRight">
-                                    <div><b class="date"><?php echo $row['date']; ?></b> <span id="floatRight"><?php if(isset($user['ownAccount'])) { echo "<a href='/lib/deletecomment.php?id=" . $row['id'] . "'>[x]</a>"; } ?></span></div><div><p><?php echo parseText($row['comment']); ?></p></div>
+                                    <div><b class="date"><?php echo $row['date']; ?></b> <img src="/static/silk/award-star-gold-2-icon.png"> <?php if(isset($user['ownAccount'])) { echo "<a href='/lib/unpin.php?id=" . $row['id'] . "'>[unpin]</a> <a href='/lib/deletecomment.php?id=" . $row['id'] . "'>[x]</a>"; } ?></div><div><p><?php echo parseText($row['comment']); ?></p></div>
+                                </td>
+                            </tr>
+                            <?php } ?>
+                            <?php
+                                $stmt = $conn->prepare("SELECT * FROM comments WHERE toid = ? AND status = 'n' ORDER BY id DESC");
+                                $stmt->bind_param("i", $_GET['id']);
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+
+                                while($row = $result->fetch_assoc()) { 
+                            ?>
+                            <tr>
+                                <td class="tableLeft">
+                                    <a href="profile.php?id=<?php echo getIDFromUser($row['author'], $conn); ?>"><div><b><center><?php echo $row['author']; ?></center></b></div><img src="/dynamic/pfp/<?php echo getPFPFromUser($row['author'], $conn); ?>"></a>
+                                </td>
+                                <td class="tableRight">
+                                    <div><b class="date"><?php echo $row['date']; ?></b> <?php if(isset($user['ownAccount'])) { echo "<a href='/lib/pin.php?id=" . $row['id'] . "'>[pin]</a> <a href='/lib/deletecomment.php?id=" . $row['id'] . "'>[x]</a>"; } ?></div><div><p><?php echo parseText($row['comment']); ?></p></div>
                                 </td>
                             </tr>
                             <?php } ?>

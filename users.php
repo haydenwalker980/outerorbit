@@ -6,7 +6,6 @@
     <head>
         <title><?php echo $config['pr_title']; ?></title>
         <link rel="stylesheet" href="/static/css/required.css"> 
-        <?php require($_SERVER["DOCUMENT_ROOT"] . "/lib/dark.php")?>
     </head>
     <body>
         <div class="container">
@@ -27,35 +26,46 @@
             ?>
             <br>
                 <div class="padding">
+                    <div class="splashBlue">
                     <center>
-                <?php if (ceil($total_pages / $num_results_on_page) > 0): ?>
-                    <?php if ($page > 1): ?>
-                    <a href="users.php?page=<?php echo $page-1 ?>">Prev</a>
+                    <?php if (ceil($total_pages / $num_results_on_page) > 0): ?>
+                        <?php if ($page > 1): ?>
+                        <a href="users.php?page=<?php echo $page-1 ?>">Prev</a>
+                        <?php endif; ?>
+
+                        <?php if ($page > 3): ?>
+                        <a href="users.php?page=1">1</a>
+                        ...
+                        <?php endif; ?>
+
+                        <?php if ($page-2 > 0): ?><a href="users.php?page=<?php echo $page-2 ?>"><?php echo $page-2 ?></a><?php endif; ?>
+                        <?php if ($page-1 > 0): ?><a href="users.php?page=<?php echo $page-1 ?>"><?php echo $page-1 ?></a><?php endif; ?>
+
+                        <a href="users.php?page=<?php echo $page ?>"><?php echo $page ?></a>
+
+                        <?php if ($page+1 < ceil($total_pages / $num_results_on_page)+1): ?><a href="users.php?page=<?php echo $page+1 ?>"><?php echo $page+1 ?></a></li><?php endif; ?>
+                        <?php if ($page+2 < ceil($total_pages / $num_results_on_page)+1): ?><a href="users.php?page=<?php echo $page+2 ?>"><?php echo $page+2 ?></a></li><?php endif; ?>
+
+                        <?php if ($page < ceil($total_pages / $num_results_on_page)-2): ?>
+                        ...
+                        <a href="users.php?page=<?php echo ceil($total_pages / $num_results_on_page) ?>"><?php echo ceil($total_pages / $num_results_on_page) ?></a>
+                        <?php endif; ?>
+
+                        <?php if ($page < ceil($total_pages / $num_results_on_page)): ?>
+                        <a href="users.php?page=<?php echo $page+1 ?>">Next</a>
+                        <?php endif; ?>
                     <?php endif; ?>
-
-                    <?php if ($page > 3): ?>
-                    <a href="users.php?page=1">1</a>
-                    ...
-                    <?php endif; ?>
-
-                    <?php if ($page-2 > 0): ?><a href="users.php?page=<?php echo $page-2 ?>"><?php echo $page-2 ?></a><?php endif; ?>
-                    <?php if ($page-1 > 0): ?><a href="users.php?page=<?php echo $page-1 ?>"><?php echo $page-1 ?></a><?php endif; ?>
-
-                    <a href="users.php?page=<?php echo $page ?>"><?php echo $page ?></a>
-
-                    <?php if ($page+1 < ceil($total_pages / $num_results_on_page)+1): ?><a href="users.php?page=<?php echo $page+1 ?>"><?php echo $page+1 ?></a></li><?php endif; ?>
-                    <?php if ($page+2 < ceil($total_pages / $num_results_on_page)+1): ?><a href="users.php?page=<?php echo $page+2 ?>"><?php echo $page+2 ?></a></li><?php endif; ?>
-
-                    <?php if ($page < ceil($total_pages / $num_results_on_page)-2): ?>
-                    ...
-                    <a href="users.php?page=<?php echo ceil($total_pages / $num_results_on_page) ?>"><?php echo ceil($total_pages / $num_results_on_page) ?></a>
-                    <?php endif; ?>
-
-                    <?php if ($page < ceil($total_pages / $num_results_on_page)): ?>
-                    <a href="users.php?page=<?php echo $page+1 ?>">Next</a>
-                    <?php endif; ?>
-                <?php endif; ?>
-                    </center>
+                            <br>
+                            <form method="get" action="/users.php">
+                                <select name="searchmethod">
+                                    <option value="new">Newest</option>
+                                    <option value="old">Oldest</option>
+                                    <option value="alph">Alphabetical</option>
+                                </select>
+                                <input type="submit" value="Go"> (Does not work yet)
+                            </form> 
+                        </center>
+                    </div>
                 </div>
             <div class="padding">
                 <div class="login">

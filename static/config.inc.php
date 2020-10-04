@@ -4,7 +4,7 @@
     $config['pr_title'] = "spacemyrebooted";
     $config['db_user'] = "";
     $config['db_pass'] = "";
-    $config['db_name'] = "spacemy2";
+    $config['db_name'] = "";
     $config['db_host'] = "127.0.0.1";
 
     $config['recaptcha_secret'] = "";

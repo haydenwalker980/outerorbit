@@ -1,4 +1,6 @@
 <?php
+require($_SERVER['DOCUMENT_ROOT'] . "/vendor/autoload.php");
+
 function getUserFromId($id, $connection) {
         $stmt = $connection->prepare("SELECT * FROM users WHERE id = ?");
         $stmt->bind_param("i", $id);
@@ -64,6 +66,19 @@ function archiveAllUserInfo($username, $connection) {
     return true;
 }
 
+function getAllFileSize($username, $conn) {
+    $stmt = $conn->prepare("SELECT * FROM files WHERE owner = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $filesize = 0;
+    while($row = $result->fetch_assoc()) {
+        $filesize = $filesize + filesize("../dynamic/files/" . $row['filename']);
+    }
+    $stmt->close();
+    return $filesize;
+}
+
 function delPostsFromUser($username, $conn) {
     $stmt = $conn->prepare("DELETE FROM comments WHERE author = ?");
     $stmt->bind_param("s", $username);
@@ -123,6 +138,20 @@ function deleteComment($id, $conn) {
     $stmt->close();
 }
 
+function pinComment($id, $conn) {
+    $stmt = $conn->prepare("UPDATE comments SET status = 'p' WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->close();
+}
+
+function unpinComment($id, $conn) {
+    $stmt = $conn->prepare("UPDATE comments SET status = 'n' WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->close();
+}
+
 function getUserFromName($name, $connection) {
         $stmt = $connection->prepare("SELECT * FROM users WHERE username = ?");
         $stmt->bind_param("s", $name);
@@ -133,6 +162,19 @@ function getUserFromName($name, $connection) {
     $stmt->close();
 
     return $user;
+}
+
+function getPosts($name, $connection) {
+    $stmt = $connection->prepare("SELECT id FROM reply WHERE author = ?");
+    $stmt->bind_param("s", $name);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $number = 0;
+    while($row = $result->fetch_assoc()) {
+        $number++;
+    }
+    return $number;
+    $stmt->close();
 }
 
 function getIDFromUser($name, $connection) {
@@ -179,8 +221,9 @@ function updateSteamURL($url, $username, $connection) {
 }
 
 function parseText($text) {
-    $url = '@(http(s)?)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s])@';
-    $text = preg_replace($url, '<a href="http$2://$4" target="_blank" title="$0">$0</a>', $text);
+    $Parsedown = new Parsedown();
+    $Parsedown->setSafeMode(true);
+    $text = $Parsedown->line($text);
     $text = str_replace(PHP_EOL, "<br>", $text);
 
     return $text;
@@ -189,6 +232,10 @@ function parseText($text) {
 function stripURLTHingies($url) {
     $replace = array("https://steamcommunity.com/id/", "/");
     return str_replace($replace, "", $url);
+}
+
+function redirectToLogin() {
+    header("Location: ../login.php");
 }
 
 if(isset($_SESSION['siteusername'])) {

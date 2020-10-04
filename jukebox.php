@@ -6,7 +6,14 @@
     <head>
         <title><?php echo $config['pr_title']; ?></title>
         <link rel="stylesheet" href="/static/css/required.css"> 
-        <?php require($_SERVER["DOCUMENT_ROOT"] . "/lib/dark.php")?>
+        <style>
+            ul {
+                columns: 5;
+                -webkit-columns: 5;
+                -moz-columns: 5;
+                padding: none;
+            }
+        </style>
     </head>
     <body>
         <div class="container">
@@ -14,31 +21,42 @@
             <br>
             <div class="padding">
                 <?php 
-                    if(isset($_GET['id'])) { 
-                        $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
-                        $stmt->bind_param("i", $_GET['id']);
+                    ini_set('display_errors', 1);
+                    ini_set('display_startup_errors', 1);
+                    error_reporting(E_ALL);
+                    if(isset($_GET['random'])) {
+                        $stmt = $conn->prepare("SELECT `music` FROM users ORDER BY RAND() LIMIT 1");
                         $stmt->execute();
                         $result = $stmt->get_result();
-
-                        while($row = $result->fetch_assoc()) { 
-                            echo '<audio style="width: 39.4em;" controls><source src="/dynamic/music/' . $row['music'] . '"></audio><br>';
-                        }
-                    }
-                ?>
-                <div class="login">
-                    <div class="loginTopbar">
-                        <b>All Music</b>
-                    </div>
-                    <div class="padding">
-                        <?php
-                            $stmt = $conn->prepare("SELECT * FROM users ORDER BY id DESC");
+                    } else {
+                        if(isset($_GET['id'])) {
+                            $stmt = $conn->prepare("SELECT `music` FROM users WHERE id = ?");
+                            $stmt->bind_param("i", $_GET['id']);
                             $stmt->execute();
                             $result = $stmt->get_result();
+                        }
+                    }
+                    while($row = $result->fetch_assoc()) { 
+                        echo '<center><audio style="width: 39.4em;" controls><source src="/dynamic/music/' . $row['music'] . '"></audio></center><br>';
+                    }
+                ?>
+                <center><a href="?random=true"><button>Random</button></a></center>
+                <div class="login">
+                    <div class="loginTopbar">
+                        <b>Ze Jukebox</b>
+                    </div>
+                    <div class="padding">
+                        <ul>
+                            <?php
+                                $stmt = $conn->prepare("SELECT * FROM users ORDER BY id DESC");
+                                $stmt->execute();
+                                $result = $stmt->get_result();
 
-                            while($row = $result->fetch_assoc()) { 
-                        ?>
-                            <a href="?id=<?php echo $row['id']; ?>"><?php echo htmlspecialchars($row['username']); ?></a><br>
-                        <?php } ?>
+                                while($row = $result->fetch_assoc()) { 
+                            ?>
+                                <li><a href="?id=<?php echo $row['id']; ?>"><?php echo htmlspecialchars($row['username']); ?></a></li>
+                            <?php } ?>
+                        </ul>
                     </div>
                 </div>
 

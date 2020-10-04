@@ -8,7 +8,6 @@
         <title><?php echo $config['pr_title']; ?></title>
         <?php $cat = getCategoryFromID((int)$_GET['id'], $conn); ?>
         <link rel="stylesheet" href="/static/css/required.css"> 
-        <?php require($_SERVER['DOCUMENT_ROOT'] . "/lib/dark.php")?>
         <link rel="stylesheet" href="/static/css/table2.css"> 
         <script src='https://www.google.com/recaptcha/api.js' async defer></script>
         <script src="/onLogin.js"></script>
@@ -67,7 +66,8 @@
                         <th style="width: 10%;">Last Reply</th>
                     </tr>
                     <?php 
-                        $stmt = $conn->prepare("SELECT * FROM threads ORDER BY toid DESC");
+                        $stmt = $conn->prepare("SELECT * FROM threads WHERE toid = ?");
+                        $stmt->bind_param("i", $_GET['id']);
                         $stmt->execute();
                         $result = $stmt->get_result();
 

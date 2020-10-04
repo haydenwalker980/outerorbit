@@ -7,8 +7,8 @@
     <head>
         <title><?php echo $config['pr_title']; ?></title>
         <link rel="stylesheet" href="/static/css/required.css"> 
-        <?php require($_SERVER['DOCUMENT_ROOT'] . "/lib/dark.php")?>
         <?php 
+            if(!isset($_SESSION['siteusername'])) { redirectToLogin(); }
             $user = getUserFromName($_SESSION['siteusername'], $conn); 
             //updateUserBio();
             
@@ -32,9 +32,6 @@
                 header("Location: manage.php");
             } else if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['interestsset']) {
                 updateUserInterest($_SESSION['siteusername'], $_POST['interests'], $conn);
-                header("Location: manage.php");
-            } else if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['darkmodeset']) {
-                setcookie("DARK_MODE", $_POST['darkMode'], time()+60*60*24*365);
                 header("Location: manage.php");
             } else if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['pfpset']) {
                 //This is terribly awful and i will probably put this in a function soon
@@ -152,11 +149,6 @@
                             }     
                         ?>
                         </center>
-                        <form method="post">
-                            <b>Dark Mode</b>
-                            <input type="checkbox" name="darkMode" id="darkMode">
-                            <input type="submit" value="Set" name="darkmodeset">
-                        </form><br>
                         <form method="post" enctype="multipart/form-data">
                             <b>Profile Picture</b><br>
                             <input type="file" name="fileToUpload" id="fileToUpload">
@@ -169,22 +161,22 @@
                         </form><br>
                         <form method="post" enctype="multipart/form-data">
                             <b>Bio</b><br>
-                            <textarea cols="48" placeholder="Bio" name="bio"><?php echo $user['bio'];?></textarea><br>
+                            <textarea cols="56" placeholder="Bio" name="bio"><?php echo $user['bio'];?></textarea><br>
                             <input name="bioset" type="submit" value="Set">
                         </form><br>
                         <form method="post" enctype="multipart/form-data">
                             <b>Interests</b><br>
-                            <textarea cols="48" placeholder="Interests" name="interests"><?php echo $user['interests'];?></textarea><br>
+                            <textarea cols="56" placeholder="Interests" name="interests"><?php echo $user['interests'];?></textarea><br>
                             <input name="interestsset" type="submit" value="Set">
                         </form><br>
                         <form method="post" enctype="multipart/form-data">
                             <b>Music Interests</b><br>
-                            <textarea cols="48" placeholder="Interests Music" name="interestsmusic"><?php echo $user['interestsmusic'];?></textarea><br>
+                            <textarea cols="56" placeholder="Interests Music" name="interestsmusic"><?php echo $user['interestsmusic'];?></textarea><br>
                             <input name="interestsmusicset" type="submit" value="Set">
                         </form><br>
                         <form method="post" enctype="multipart/form-data">
                             <b>CSS</b><br>
-                            <textarea cols="48" placeholder="CSS" name="css"><?php echo $user['css'];?></textarea><br>
+                            <textarea cols="56" rows="16" placeholder="CSS" name="css"><?php echo $user['css'];?></textarea><br>
                             <input name="cssset" type="submit" value="Set">
                         </form><br>
                         <form method="post">

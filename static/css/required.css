@@ -349,3 +349,39 @@ div.groupssidelinks a {
     padding-bottom: 1px;
 }
 
+div.sideblog {
+    width: 160px;
+    border: 1px solid #69C;
+    margin-bottom: 2em;
+}
+
+div.sideblog h3 {
+    margin: 0;
+    padding: .2em 0;
+    border-top: 1px solid #fff;
+    border-left: 1px solid #fff;
+    border-right: 1px solid #fff;
+    color: #000;
+    background-color: #A5D5F5;
+    text-align: center;
+    font-weight: bold;
+    font-size: 10pt;
+}
+
+div.sideblog ul {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+div.sideblog li {
+    margin: 0;
+    padding: .2em 0;
+    list-style: none;
+    background-color: #e5e5e5;
+    border-top: 1px solid #fff;
+    border-left: 1px solid #fff;
+    border-right: 1px solid #fff;
+    text-align: center;
+    font-size: 10pt;
+}

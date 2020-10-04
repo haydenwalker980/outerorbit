@@ -6,7 +6,6 @@
     <head>
         <title><?php echo $config['pr_title']; $group = getGroupFromId((int)$_GET['id'], $conn); ?></title>
         <link rel="stylesheet" href="/static/css/required.css"> 
-        <?php require($_SERVER["DOCUMENT_ROOT"] . "/lib/dark.php")?>
         <script src='https://www.google.com/recaptcha/api.js' async defer></script>
         <script src="/onLogin.js"></script>
         <style>
@@ -42,15 +41,49 @@
                 $stmt->bind_param("si", $_SESSION['siteusername'], $_GET['id']);
                 $stmt->execute();
                 $result = $stmt->get_result();
-                if($result->num_rows === 0) die('you dont own this blog post');
+                if($result->num_rows === 0) die('you dont own this group');
                 $stmt->close();
 
                 $stmt = $conn->prepare("UPDATE groups SET description = ?, visiblity = ? WHERE id = ?");
                 $stmt->bind_param("ssi", $_POST['comment'], $_POST['visibility'], $_GET['id']);
                 $stmt->execute();
                 $stmt->close();
+
+                //This is terribly awful and i will probably put this in a function soon
+                $target_dir = "../dynamic/groups/";
+                $imageFileType = strtolower(pathinfo($_FILES["fileToUpload"]["name"], PATHINFO_EXTENSION));
+                $target_name = md5_file($_FILES["fileToUpload"]["tmp_name"]) . "." . $imageFileType;
+
+                $target_file = $target_dir . $target_name;
                 
-                header("Location: index.php");
+                $uploadOk = true;
+                $movedFile = false;
+
+                if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+                && $imageFileType != "gif" ) {
+                    $fileerror = 'unsupported file type. must be jpg, png, jpeg, or gif';
+                    $uploadOk = false;
+                }
+
+                if (file_exists($target_file)) {
+                    $movedFile = true;
+                } else {
+                    $movedFile = move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
+                }
+
+                if ($uploadOk) {
+                    if ($movedFile) {
+                        $stmt = $conn->prepare("UPDATE groups SET pic = ? WHERE `name` = ?;");
+                        $stmt->bind_param("ss", $target_name, $group['name']);
+                        $stmt->execute(); 
+                        $stmt->close();
+                        //header("Location: index.php");
+                    } else {
+                        $fileerror = 'fatal error';
+                    }
+                }
+                
+                //header("Location: index.php");
                 skipcomment:
             }
             ?>
@@ -74,7 +107,9 @@
                             <select id="options" name="visibility">
                                 <option value="Visible">Visible</option>
                                 <option value="Link Only">Link Only</option>
-                            </select><br>
+                            </select><br><br>
+                            <b>Update Pic</b><br>
+                            <input type="file" name="fileToUpload" id="fileToUpload"><br><br>
 
                             <input type="submit" value="Post" class="g-recaptcha" data-sitekey="<?php echo $config['recaptcha_sitekey']; ?>" data-callback="onLogin">
                         </form>

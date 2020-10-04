@@ -7,7 +7,6 @@
     <head>
         <title><?php echo $config['pr_title']; ?></title>
         <link rel="stylesheet" href="/static/css/required.css"> 
-        <?php require($_SERVER["DOCUMENT_ROOT"] . "/lib/dark.php")?>
     </head>
     <body>
         <div class="container">

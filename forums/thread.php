@@ -8,7 +8,6 @@
         <title><?php echo $config['pr_title']; ?></title>
         <?php $thread = getPostFromID((int)$_GET['id'], $conn); ?>
         <link rel="stylesheet" href="/static/css/required.css"> 
-        <?php require($_SERVER['DOCUMENT_ROOT'] . "/lib/dark.php")?>
         <link rel="stylesheet" href="/static/css/table2.css"> 
         <script src='https://www.google.com/recaptcha/api.js' async defer></script>
         <script src="/onLogin.js"></script>
@@ -61,7 +60,7 @@
                 </div><br>
                 <hr>
                 <div id="originalpost">
-                    <img style="float:right;height: 5em; width: 5em;padding-left: 1em;" src="/dynamic/pfp/<?php echo getPFPFromUser($thread['author'], $conn); ?>">
+                    <img style="float:right;height: 5em; width: 5em;" src="/dynamic/pfp/<?php echo getPFPFromUser($thread['author'], $conn); ?>">
                     <h2 id="noMargin" style="display: inline;"><?php echo $thread['title']?></h2> by
                     <small>
                         <a href="/profile.php?id=<?php echo getIDFromUser($thread['author'], $conn); ?>">
@@ -90,7 +89,8 @@
                                     <a href="/profile.php?id=<?php echo getIDFromUser($row['author'], $conn); ?>">
                                         <img style="height: 3em; width: 3em;" src="/dynamic/pfp/<?php echo getPFPFromUser($row['author'], $conn); ?>"><br>
                                         <b><?php echo $row['author']; ?></b>
-                                    </a>
+                                    </a><br>
+                                    <small><?php echo getPosts($row['author'], $conn); ?> Replies</small>
                                 </center>
                             </td>
                             <td><?php echo parseText($row['text']); ?></td>

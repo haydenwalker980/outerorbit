@@ -6,7 +6,6 @@
     <head>
         <title><?php echo $config['pr_title']; ?></title>
         <link rel="stylesheet" href="/static/css/required.css"> 
-        <?php require($_SERVER["DOCUMENT_ROOT"] . "/lib/dark.php")?>
         <script src='https://www.google.com/recaptcha/api.js' async defer></script>
         <script src="/onLogin.js"></script>
         

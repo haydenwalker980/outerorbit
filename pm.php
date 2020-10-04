@@ -6,7 +6,6 @@
     <head>
         <title><?php echo $config['pr_title']; ?></title>
         <link rel="stylesheet" href="/static/css/required.css"> 
-        <?php require($_SERVER["DOCUMENT_ROOT"] . "/lib/dark.php")?>
         <script src='https://www.google.com/recaptcha/api.js' async defer></script>
         <script src="/onLogin.js"></script>
         <style>
@@ -47,7 +46,7 @@
             <br>
             <div class="padding">
                 <span id="padding10">
-                    <small><a href="/">SpaceMy</a> / <a href="/users.php">Profiles</a> / <a href="/profile.php?id=<?php echo $_GET['id']?>"><?php echo $user['username']; ?></a> / <a href="/pm.php?id=<?php echo $_GET['id']?>">Send PM</a></small>
+                <small><a href="/">SpaceMy</a> / <a href="/users.php">Profiles</a> / <a href="/profile.php?id=<?php echo $_GET['id']?>"><?php echo $user['username']; ?></a> / <a href="/pm.php?id=<?php echo $_GET['id']?>">Send PM</a></small>
                 </span><br>
                 <div class="customtopLeft">  
                     <div class="splashBlue">

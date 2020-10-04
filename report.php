@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title><?php echo $config['pr_title']; $blog = getInfoFromBlog((int)$_GET['id'], $conn); ?></title>
+        <title><?php echo $config['pr_title']; ?></title>
         <link rel="stylesheet" href="/static/css/required.css"> 
         <script src='https://www.google.com/recaptcha/api.js' async defer></script>
         <script src="/onLogin.js"></script>
@@ -27,55 +27,38 @@
             <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/header.php"); 
 
             if($_SERVER['REQUEST_METHOD'] == 'POST') {
-                ini_set('display_errors', 1);
-                ini_set('display_startup_errors', 1);
-                error_reporting(E_ALL);
-
                 if(!isset($_SESSION['siteusername'])){ $error = "you are not logged in"; goto skipcomment; }
                 if(!$_POST['comment']){ $error = "your blog body cannot be blank"; goto skipcomment; }
-                if(strlen($_POST['comment']) > 1024){ $error = "your comment must be shorter than 1024 characters"; goto skipcomment; }
+                if(strlen($_POST['comment']) > 10000){ $error = "your comment must be shorter than 10000 characters"; goto skipcomment; }
                 if(!isset($_POST['g-recaptcha-response'])){ $error = "captcha validation failed"; goto skipcomment; }
                 if(!validateCaptcha($config['recaptcha_secret'], $_POST['g-recaptcha-response'])) { $error = "captcha validation failed"; goto skipcomment; }
-            
-                $stmt = $conn->prepare("SELECT * FROM blogs WHERE author = ? AND id = ?");
-                $stmt->bind_param("si", $_SESSION['siteusername'], $_GET['id']);
+
+                $stmt = $conn->prepare("INSERT INTO `reports` (reportingid, message, author) VALUES (?, ?, ?)");
+                $stmt->bind_param("sss", $_GET['id'], $text, $_SESSION['siteusername']);
+                $text = htmlspecialchars($_POST['comment']);
                 $stmt->execute();
-                $result = $stmt->get_result();
-                if($result->num_rows === 0) die('you dont own this blog post');
                 $stmt->close();
 
-                $stmt = $conn->prepare("UPDATE blogs SET message = ?, visiblity = ? WHERE id = ?");
-                $stmt->bind_param("ssi", $_POST['comment'], $_POST['visibility'], $_GET['id']);
-                $stmt->execute();
-                $stmt->close();
-                
-                header("Location: index.php");
+                header("Location: report.php?success=true");
                 skipcomment:
             }
             ?>
             <br>
             <div class="padding">
                 <span id="padding10">
-                    <small>SpaceMy / Edit / Blog</small>
+                    <small>SpaceMy / Report / New</small>
                 </span><br>
                 <div class="customtopLeft">  
                     <div class="splashBlue">
-                        Remember to make sure that your edit is not innapropriate! Have fun.
+                        Remember to make sure that your report is formal and proper.
                     </div><br>
                 </div>
                 <div class="customtopRight">
                     <div class="comment">
                         <form method="post" enctype="multipart/form-data" id="submitform">
                             <?php if(isset($error)) { echo $error . "<br>"; } ?>
-                            <b>Editing "<?php echo $blog['subject']; ?>"</b><br>
-                            <textarea cols="48" placeholder="Blog Body" name="comment"><?php echo $blog['message']; ?></textarea><br>
-
-                            <select id="options" name="visibility">
-                                <option value="Visible">Visible</option>
-                                <option value="Profile Only">Profile Only</option>
-                                <option value="Link Only">Link Only</option>
-                            </select><br>
-
+                            <b>Report User</b><br>
+                            <textarea cols="48" placeholder="Body" name="comment"></textarea><br>
                             <input type="submit" value="Post" class="g-recaptcha" data-sitekey="<?php echo $config['recaptcha_sitekey']; ?>" data-callback="onLogin">
                         </form>
                     </div>

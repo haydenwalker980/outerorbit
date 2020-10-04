@@ -6,7 +6,6 @@
     <head>
         <title><?php echo $config['pr_title']; ?></title>
         <link rel="stylesheet" href="/static/css/required.css"> 
-        <?php require($_SERVER['DOCUMENT_ROOT'] . "/lib/dark.php")?>
         <style>
             .customtopLeft {
                 float: left;
@@ -81,7 +80,7 @@
 
                             while($row = $result->fetch_assoc()) { 
                         ?>
-                            <li><span id="blogPost"><?php echo htmlspecialchars($row['subject']); ?> by <b><?php echo htmlspecialchars($row['author']); ?></b> [<a href="/blogs/view.php?id=<?php echo $row['id']; ?>">+</a>]</span></span></li>
+                            <li><span id="blogPost"><?php echo $row['subject']; ?> by <b><?php echo htmlspecialchars($row['author']); ?></b> [<a href="/blogs/view.php?id=<?php echo $row['id']; ?>">+</a>]</span></span></li>
                         <?php } ?>
                         </ul>
                     </div><br>
