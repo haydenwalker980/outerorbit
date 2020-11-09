@@ -7,6 +7,8 @@
         <title><?php echo $config['pr_title']; ?></title>
         <link rel="stylesheet" href="/static/css/required.css"> 
         <script src='https://www.google.com/recaptcha/api.js' async defer></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+        <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
         <script src="/onLogin.js"></script>
         <style>
             .customtopLeft {
@@ -89,10 +91,13 @@
                         <form method="post" enctype="multipart/form-data" id="submitform">
                             <?php if(isset($fileerror)) { echo "<small style='color:red'>" . $fileerror . "</small><br>"; } ?>
                             <?php if(isset($error)) { echo $error . "<br>"; } ?>
-                            <b>New Group</b><br>
+                            <b>New Group</b></span><br>
                             <input type="file" name="fileToUpload" id="fileToUpload"><br>
                             <br><input placeholder="Group Title" type="text" name="subject" required="required" size="63"></b><br>
-                            <textarea cols="48" placeholder="Description" name="comment"></textarea><br>
+                            <textarea cols="48" id="desc" placeholder="Description" name="comment"></textarea><br><small><a href="https://www.markdownguide.org/basic-syntax">Markdown</a> & Emoticons are allowed.</small><br>
+                            <script>
+                            var simplemde = new SimpleMDE({ element: document.getElementById("desc") });
+                            </script>
                             <input type="submit" value="Post" class="g-recaptcha" data-sitekey="<?php echo $config['recaptcha_sitekey']; ?>" data-callback="onLogin">
                         </form>
                     </div>

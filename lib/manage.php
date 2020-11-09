@@ -26,6 +26,15 @@ function updateUserGender($username, $gender, $connection) {
     return true;
 }
 
+function updateUserSong($username, $gender, $connection) {
+    $stmt = $connection->prepare("UPDATE users SET song = ? WHERE username = ?");
+    $stmt->bind_param("ss", $gender, $username);
+    $stmt->execute();
+$stmt->close();
+
+return true;
+}
+
 function updateUserAge($username, $age, $connection) {
         $stmt = $connection->prepare("UPDATE users SET age = ? WHERE username = ?");
         $stmt->bind_param("ss", $age, $username);

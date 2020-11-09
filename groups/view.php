@@ -7,6 +7,8 @@
         <title><?php echo $config['pr_title']; ?></title>
         <link rel="stylesheet" href="/static/css/required.css"> 
         <script src='https://www.google.com/recaptcha/api.js' async defer></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+        <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
         <script src="/onLogin.js"></script>
         
         <?php $group = getGroupFromId((int)$_GET['id'], $conn); 
@@ -29,6 +31,7 @@
             echo "q";
         }
         ?>
+        <?php $user = getUserFromName($group['owner'], $conn); ?>
         <meta property="og:title" content="<?php echo $group['name']; ?>" />
         <meta property="og:description" content="<?php echo preg_replace("/\"/", "&quot;", $group['description']); ?>" />
         <meta property="og:image" content="https://spacemy.xyz/dynamic/groups/<?php echo $group['pic']; ?>" />
@@ -68,13 +71,37 @@
                     <div class="splashBlue">
                         Remember to make sure that your reply is not innapropriate! Have fun.
                     </div><br>
-                    <center><b><?php echo htmlspecialchars($group['name']); ?></b><br><a href="/profile.php?id=<?php echo getIDFromUser($group['owner'], $conn); ?>"><div><b><?php echo $group['owner']; ?></b></div><img style="height: 4em; width: 4em;" src="/dynamic/pfp/<?php echo getPFPFromUser($group['owner'], $conn); ?>"></a><br><br><img style="height: 4em; width: 4em;" src="/dynamic/groups/<?php echo $group['pic']; ?>"><br><br>
-                    <a href="join.php?id=<?php echo $group['id']; ?>"><button>Join</button></a></center>
+                    <center><b><?php echo htmlspecialchars($group['name']); ?></b><br><a href="/profile.php?id=<?php echo getIDFromUser($group['owner'], $conn); ?>"><div><b><?php echo $group['owner']; ?></b></div></a><br><br><img style="height: 4em; width: 4em;" src="/dynamic/groups/<?php echo $group['pic']; ?>"><br>
+                    <?php if($group['private'] != "p") { ?><a href="join.php?id=<?php echo $group['id']; ?>"><button>Join</button></a></center><?php } else { ?> <b>This group is private.</b> <?php } ?><br>
+                    <div class="userInfoBlog">
+                        <?php echo parseText($user['bio']); ?><br>
+                        <b>Gender: </b><?php echo $user['gender']; ?><br>
+                        <b>Age: </b><?php echo $user['age']; ?><br>
+                        <b>Location: </b><?php echo $user['location']; ?><br>
+                        <b>Last Login: </b><?php echo $user['lastlogin']; ?><br><br>
+                        <div class="contacting">
+                            <div class="contactingTopbar">
+                                Contacting
+                            </div>
+                            <div class="padding">
+                                <ul>
+                                    <li><a href="pm.php?id=<?php echo $user['id']; ?>">Message</a></li>
+                                    <li><a href="/friends/add.php?id=<?php echo $user['id']; ?>">Friend</a></li>
+                                    <li><a href="block.php?id=<?php echo $user['id']; ?>">Block </a></li>
+                                    <li><a href="report.php?id=<?php echo $user['id']; ?>">Report</a></li>
+                                </ul>
+                            </div>
+                        </div><br>
+                        <center>
+                            <small>[<a href="like.php?id=<?php echo $blog['id']; ?>">like</a>] [<a href="dislike.php?id=<?php echo $blog['id']; ?>">dislike</a>]
+                            <br>[<?php echo getLikesFromBlog($blog['id'], $conn); ?> likes] [<?php echo getDislikesFromBlog($blog['id'], $conn); ?> dislikes] </small><br>
+                        </center>
+                    </div>
                 </div>
                 <div class="customtopRight">
                     <div class="splashBlue">
                         <h2 id="noMargin">Group Description</h2>
-                        <?php echo parseText($group['description']); ?>
+                        <?php echo htmlspecialchars($group['description']); ?>
                     </div><br>
                     <div class="splashBlue">
                         <b>Members</b><br>
@@ -89,11 +116,21 @@
                             <a href="/profile.php?id=<?php echo getIDFromUser($row['username'], $conn); ?>"><?php echo $row['username']; ?></a> <?php if($ownsGroup == true) { echo " <a href='exile.php?id=" .  getIDFromUser($row['username'], $conn) . "'>[exile]</a>"; } ?><br>
                         <?php } ?>
                     </div><br>
+                    <?php
+                        if($ownsGroup == true) {
+                    ?>
+                        <div class="splashBlue">
+                            <a href="https://www.spacemy.xyz/groups/join.php?id=109">Copy this to invite your friends to your group.</a>
+                        </div><br>
+                    <?php } ?>
                     <div class="comment">
                         <form method="post" enctype="multipart/form-data" id="submitform">
                             <?php if(isset($error)) { echo $error . "<br>"; } ?>
                             <b>Reply</b><br>
-                            <textarea cols="39" placeholder="Comment" name="comment"></textarea><br>
+                            <textarea cols="39" placeholder="Comment" id="com" name="comment"></textarea><br><small><a href="https://www.markdownguide.org/basic-syntax">Markdown</a> & Emoticons are allowed.</small><br>
+                            <script>
+                            var simplemde = new SimpleMDE({ element: document.getElementById("com") });
+                            </script>
                             <input type="submit" value="Post" class="g-recaptcha" data-sitekey="<?php echo $config['recaptcha_sitekey']; ?>" data-callback="onLogin">
                         </form>
                     </div><br>

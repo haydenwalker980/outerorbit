@@ -27,25 +27,21 @@
             <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/header.php"); 
 
             if($_SERVER['REQUEST_METHOD'] == 'POST') {
-                ini_set('display_errors', 1);
-                ini_set('display_startup_errors', 1);
-                error_reporting(E_ALL);
-
                 if(!isset($_SESSION['siteusername'])){ $error = "you are not logged in"; goto skipcomment; }
                 if(!$_POST['comment']){ $error = "your blog body cannot be blank"; goto skipcomment; }
                 if(strlen($_POST['comment']) > 1024){ $error = "your comment must be shorter than 1024 characters"; goto skipcomment; }
                 if(!isset($_POST['g-recaptcha-response'])){ $error = "captcha validation failed"; goto skipcomment; }
                 if(!validateCaptcha($config['recaptcha_secret'], $_POST['g-recaptcha-response'])) { $error = "captcha validation failed"; goto skipcomment; }
             
-                $stmt = $conn->prepare("SELECT * FROM blogs WHERE author = ? AND id = ?");
+                $stmt = $conn->prepare("SELECT * FROM groups WHERE owner = ? AND id = ?");
                 $stmt->bind_param("si", $_SESSION['siteusername'], $_GET['id']);
                 $stmt->execute();
                 $result = $stmt->get_result();
                 if($result->num_rows === 0) die('you dont own this group');
                 $stmt->close();
 
-                $stmt = $conn->prepare("UPDATE groups SET description = ?, visiblity = ? WHERE id = ?");
-                $stmt->bind_param("ssi", $_POST['comment'], $_POST['visibility'], $_GET['id']);
+                $stmt = $conn->prepare("UPDATE groups SET description = ?, visiblity = ?, private = ? WHERE id = ?");
+                $stmt->bind_param("sssi", $_POST['comment'], $_POST['visibility'], $_POST['inv'], $_GET['id']);
                 $stmt->execute();
                 $stmt->close();
 
@@ -94,7 +90,7 @@
                 </span><br>
                 <div class="customtopLeft">  
                     <div class="splashBlue">
-                        Remember to make sure that your edit is not innapropriate! Have fun.
+                        Remember to make sure that your edit is not inappropriate! Have fun.
                     </div><br>
                 </div>
                 <div class="customtopRight">
@@ -108,10 +104,16 @@
                                 <option value="Visible">Visible</option>
                                 <option value="Link Only">Link Only</option>
                             </select><br><br>
+
+                            <select id="options" name="inv">
+                                <option value="e">Public</option>
+                                <option value="p">Private</option>
+                            </select><br><br>
+
                             <b>Update Pic</b><br>
                             <input type="file" name="fileToUpload" id="fileToUpload"><br><br>
 
-                            <input type="submit" value="Post" class="g-recaptcha" data-sitekey="<?php echo $config['recaptcha_sitekey']; ?>" data-callback="onLogin">
+                            <input type="submit" value="Update" class="g-recaptcha" data-sitekey="<?php echo $config['recaptcha_sitekey']; ?>" data-callback="onLogin">
                         </form>
                     </div>
                 </div>

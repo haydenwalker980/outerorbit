@@ -7,6 +7,12 @@
     <head>
         <title><?php echo $config['pr_title']; ?></title>
         <link rel="stylesheet" href="/static/css/required.css"> 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/monokai.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+        <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+        <link rel="stylesheet" href="codemirror/codemirror.css">
+        <script src="codemirror/codemirror.js"></script>
         <?php 
             if(!isset($_SESSION['siteusername'])) { redirectToLogin(); }
             $user = getUserFromName($_SESSION['siteusername'], $conn); 
@@ -21,6 +27,9 @@
             } else if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['genderset']) {
                 updateUserGender($_SESSION['siteusername'], $_POST['gender'], $conn);
                 header("Location: manage.php");
+            } else if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['songtitleset']) {
+                updateUserSong($_SESSION['siteusername'], $_POST['songtitle'], $conn);
+                header("Location: manage.php");
             } else if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['ageset']) {
                 updateUserAge($_SESSION['siteusername'], $_POST['age'], $conn);
                 header("Location: manage.php");
@@ -33,6 +42,13 @@
             } else if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['interestsset']) {
                 updateUserInterest($_SESSION['siteusername'], $_POST['interests'], $conn);
                 header("Location: manage.php");
+            } else if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['privacyset']) {
+                $buffer = $_POST['blogsprivacy'] . "|" . $_POST['friendsprivacy'] . "|" . $_POST['commentssprivacy'];
+                $stmt = $conn->prepare("UPDATE users SET privacy = ? WHERE username = ?");
+                $stmt->bind_param("ss", $buffer, $_SESSION['siteusername']);
+                $stmt->execute();
+                $stmt->close();
+                header("Location: manage.php"); 
             } else if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['pfpset']) {
                 //This is terribly awful and i will probably put this in a function soon
                 $target_dir = "dynamic/pfp/";
@@ -150,6 +166,26 @@
                         ?>
                         </center>
                         <form method="post" enctype="multipart/form-data">
+                            <b>User Privacy</b><br><br>
+                                Blogs
+                                <select name="blogsprivacy">
+                                    <option value="public">Public</option>
+                                    <option value="hide">Hide</option>
+                                </select>
+                                <br>Friends
+                                <select name="friendsprivacy">
+                                    <option value="public">Public</option>
+                                    <option value="hide">Hide</option>
+                                </select>
+                                <br>Comments
+                                <select name="commentssprivacy">
+                                    <option value="public">Public</option>
+                                    <option value="friend">Friend-Only</option>
+                                    <option value="hide">Hide</option>
+                                </select><br>
+                                <input type="submit" value="Update" name="privacyset">
+                        </form><br>
+                        <form method="post" enctype="multipart/form-data">
                             <b>Profile Picture</b><br>
                             <input type="file" name="fileToUpload" id="fileToUpload">
                             <input type="submit" value="Upload Image" name="pfpset">
@@ -161,7 +197,10 @@
                         </form><br>
                         <form method="post" enctype="multipart/form-data">
                             <b>Bio</b><br>
-                            <textarea cols="56" placeholder="Bio" name="bio"><?php echo $user['bio'];?></textarea><br>
+                            <textarea cols="56" id="biomd" placeholder="Bio" name="bio"><?php echo $user['bio'];?></textarea><br>
+                            <script>
+                            var simplemde = new SimpleMDE({ element: document.getElementById("biomd") });
+                            </script>
                             <input name="bioset" type="submit" value="Set">
                         </form><br>
                         <form method="post" enctype="multipart/form-data">
@@ -174,11 +213,21 @@
                             <textarea cols="56" placeholder="Interests Music" name="interestsmusic"><?php echo $user['interestsmusic'];?></textarea><br>
                             <input name="interestsmusicset" type="submit" value="Set">
                         </form><br>
+                        <button onclick="loadpfwin()" id="prevbtn">Show Live CSS Preview</button>
                         <form method="post" enctype="multipart/form-data">
                             <b>CSS</b><br>
-                            <textarea cols="56" rows="16" placeholder="CSS" name="css"><?php echo $user['css'];?></textarea><br>
-                            <input name="cssset" type="submit" value="Set">
-                        </form><br>
+                            <textarea id="cssarea" placeholder="CSS" name="css"><?php echo $user['css'];?></textarea><br>
+                            <script src="codemirror/mode/css/css.js"></script>
+                            <script>
+                                var editor = CodeMirror.fromTextArea(cssarea, {
+                                    lineNumbers: true,
+                                    tabSize: 2,
+                                    value: "<?php echo trim(preg_replace('/\s+/', ' ', addslashes($user['css']))); ?>",
+                                    mode: "css"
+                                });
+                            </script>
+                            <input name="cssset" type="submit" value="Set"><br>
+                        </form>
                         <form method="post">
                             <b>Age</b> <br><input value="<?php echo $user['age']; ?>" type="text" name="age" required="required" row="4"></b><br>
                             <input type="submit" value="Set" name="ageset">
@@ -194,11 +243,55 @@
                             <input type="submit" value="Set" name="genderset">
                         </form><br>
 
+                        <form method="post">
+                            <b>Song Title</b> <br><input value="<?php echo $user['song']; ?>" type="text" name="songtitle" required="required" row="4"></b><br>
+                            <input type="submit" value="Set" name="songtitleset">
+                        </form><br>
                     </div>
                 </div>
             </div>
         </div>
         <br>
         <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/footer.php"); ?>
+        <!-- CSS Editor -->
+        <script>
+            // Constants (should be defined by PHP)
+            let webroot = "https://www.spacemy.xyz"; //"https://spacemy.xyz";
+            let profile_id = <?php echo getIDFromUser($_SESSION['siteusername'], $conn) ?>;
+
+            // Global vars
+            var profile_window;
+            var chkclose_timer;
+
+            function freepfwin() {
+                // Enable Open Preview button
+                document.getElementById("prevbtn").style.display = null;
+
+                // Disable changes being sent to preview
+                document.getElementById("cssarea").onkeyup = null;
+            }
+
+            function loadpfwin() {
+                profile_window = window.open( `${webroot}/preview.php?id=${profile_id}&ed`, "SpaceMy: Preview CSS", "width=920,height=600" );
+
+                profile_window.window.onload = () => {
+                    // Disable Open Preview button
+                    document.getElementById("prevbtn").style.display = "none";
+
+                    // Any changes change css on preview
+                    editor.on('change', function() {
+                        profile_window.document.getElementsByTagName("style")[0].innerHTML = editor.getValue();
+                    });
+                };
+
+                chkclose_timer = setInterval(()=>{
+                    if (profile_window.closed) {
+                        console.log("closed")
+                        clearInterval(chkclose_timer);
+                        freepfwin();
+                    }
+                }, 100);
+            };
+        </script>
     </body>
 </html>

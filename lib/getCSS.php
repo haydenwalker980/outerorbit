@@ -20,7 +20,7 @@ while($row = $result->fetch_assoc()) {
 }
 $stmt->close();
 
-$DISALLOWED = array("<?php", "?>", "behavior: url", ".php", "@import", "@\import", "@/import"); 
+$DISALLOWED = array("<?php", "?>", "behavior: url", ".php");
 $validated = str_replace($DISALLOWED, "", $css);
 
 $minifier = new Minify\CSS($validated);

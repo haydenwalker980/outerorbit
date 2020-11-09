@@ -1,5 +1,6 @@
 <?php
 require($_SERVER['DOCUMENT_ROOT'] . "/vendor/autoload.php");
+use Snipe\BanBuilder\CensorWords;
 
 function getUserFromId($id, $connection) {
         $stmt = $connection->prepare("SELECT * FROM users WHERE id = ?");
@@ -35,6 +36,13 @@ function getInfoFromBlog($id, $connection) {
     $stmt->close();
 
     return $user;
+}
+
+function logDB($text, $mysqli) {
+    $stmt = $mysqli->prepare("INSERT INTO logs (event) VALUES (?)");
+    $stmt->bind_param("s", $text);
+    $stmt->execute();
+    $stmt->close();
 }
 
 function archiveAllUserInfo($username, $connection) {
@@ -189,6 +197,50 @@ function getIDFromUser($name, $connection) {
     $stmt->close();
 }
 
+function getLikesFromBlog($id, $connection) {
+    $stmt = $connection->prepare("SELECT * FROM bloglikes WHERE toid = ? AND type = 'l'");
+    $stmt->bind_param("s", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $rows = mysqli_num_rows($result); 
+    $stmt->close();
+
+    return $rows;
+}
+
+function getDislikesFromBlog($id, $connection) {
+    $stmt = $connection->prepare("SELECT * FROM bloglikes WHERE toid = ? AND type = 'd'");
+    $stmt->bind_param("s", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $rows = mysqli_num_rows($result); 
+    $stmt->close();
+
+    return $rows;
+}
+
+function getLikesFromVideos($id, $connection) {
+    $stmt = $connection->prepare("SELECT * FROM videolikes WHERE toid = ? AND type = 'l'");
+    $stmt->bind_param("s", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $rows = mysqli_num_rows($result);
+    $stmt->close();
+
+    return $rows;
+}
+
+function getDislikesFromVideos($id, $connection) {
+    $stmt = $connection->prepare("SELECT * FROM videolikes WHERE toid = ? AND type = 'd'");
+    $stmt->bind_param("s", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $rows = mysqli_num_rows($result);
+    $stmt->close();
+
+    return $rows;
+}
+
 function getNameFromUser($id, $connection) {
     $stmt = $connection->prepare("SELECT username FROM users WHERE id = ?");
     $stmt->bind_param("s", $id);
@@ -213,6 +265,24 @@ function getPFPFromUser($name, $connection) {
     $stmt->close();
 }
 
+function updateCategoryTime($id, $conn) {
+    $stmt = $conn->prepare("UPDATE categories SET lastmodified = now() WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->close();
+
+    return true;
+}
+
+function updateThreadTime($id, $conn) {
+    $stmt = $conn->prepare("UPDATE threads SET lastmodified = now() WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->close();
+
+    return true;
+}
+
 function updateSteamURL($url, $username, $connection) {
     $stmt = $connection->prepare("UPDATE users SET steamurl = ? WHERE username = ?");
     $stmt->bind_param("ss", $url, $username);
@@ -220,10 +290,36 @@ function updateSteamURL($url, $username, $connection) {
     $stmt->close();
 }
 
+function convertYoutube($string) {
+	return preg_replace(
+		"/\s*[a-zA-Z\/\/:\.]*youtu(be.com\/watch\?v=|.be\/)([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i",
+		"<iframe width='290' height='200' src='//www.youtube.com/embed/$2' allowfullscreen></iframe>",
+		$string
+	);
+}
+
+
+function parseEmoticons($input) {
+    $find = array(":troll:", ":nes:", ":cookie:", ":cookiemonster:", ":dance:", ":mac:", ":jon:");
+    $replace = array(" <img src='/static/troll.png'> ", " <img src='/static/nes.gif'> ", " <img src='/static/cookie.gif'> ", " <img src='/static/CookieMonster.gif'> ", " <img src='/static/dance.gif'> ", " <img src='/static/macemoji.png'> ", " <img src='/static/jonnose.png'> ");
+    $input = str_replace($find, $replace, $input);
+    return $input;
+}
+
 function parseText($text) {
+    $text = htmlspecialchars($text);
     $Parsedown = new Parsedown();
     $Parsedown->setSafeMode(true);
     $text = $Parsedown->line($text);
+
+    $censor = new CensorWords;
+    $censortext = $censor->censorString($text);
+    $text = $censortext['clean'];
+
+    $text = preg_replace("/@([a-zA-Z0-9-]+|\\+\\])/", "<a href='/redirectname.php?name=$1'>@$1</a>", $text);
+    $text = parseEmoticons($text);
+    $text = convertYoutube($text);
+
     $text = str_replace(PHP_EOL, "<br>", $text);
 
     return $text;

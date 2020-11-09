@@ -28,10 +28,14 @@
                         $stmt = $conn->prepare("SELECT `music` FROM users ORDER BY RAND() LIMIT 1");
                         $stmt->execute();
                         $result = $stmt->get_result();
-                    } else {
+                    } else if(!isset($_GET['random'])) {
                         if(isset($_GET['id'])) {
                             $stmt = $conn->prepare("SELECT `music` FROM users WHERE id = ?");
                             $stmt->bind_param("i", $_GET['id']);
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+                        } else {
+                            $stmt = $conn->prepare("SELECT `music` FROM users ORDER BY RAND() LIMIT 1");
                             $stmt->execute();
                             $result = $stmt->get_result();
                         }

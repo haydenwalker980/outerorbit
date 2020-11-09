@@ -44,8 +44,8 @@
                 if($result->num_rows === 0) die('you dont own this blog post');
                 $stmt->close();
 
-                $stmt = $conn->prepare("UPDATE blogs SET message = ?, visiblity = ? WHERE id = ?");
-                $stmt->bind_param("ssi", $_POST['comment'], $_POST['visibility'], $_GET['id']);
+                $stmt = $conn->prepare("UPDATE blogs SET message = ?, visiblity = ?, comment = ? WHERE id = ?");
+                $stmt->bind_param("sssi", $_POST['comment'], $_POST['visibility'], $_POST['commentst'], $_GET['id']);
                 $stmt->execute();
                 $stmt->close();
                 
@@ -60,7 +60,7 @@
                 </span><br>
                 <div class="customtopLeft">  
                     <div class="splashBlue">
-                        Remember to make sure that your edit is not innapropriate! Have fun.
+                        Remember to make sure that your edit is not inappropriate! Have fun.
                     </div><br>
                 </div>
                 <div class="customtopRight">
@@ -70,13 +70,19 @@
                             <b>Editing "<?php echo $blog['subject']; ?>"</b><br>
                             <textarea cols="48" placeholder="Blog Body" name="comment"><?php echo $blog['message']; ?></textarea><br>
 
+                            <b>Visibility: </b>
                             <select id="options" name="visibility">
                                 <option value="Visible">Visible</option>
                                 <option value="Profile Only">Profile Only</option>
                                 <option value="Link Only">Link Only</option>
                             </select><br>
+                            <b>Comments: </b>
+                            <select id="options" name="commentst">
+                                <option value="a">Normal</option>
+                                <option value="n">Disabled</option>
+                            </select><br>
 
-                            <input type="submit" value="Post" class="g-recaptcha" data-sitekey="<?php echo $config['recaptcha_sitekey']; ?>" data-callback="onLogin">
+                            <input type="submit" value="Update" class="g-recaptcha" data-sitekey="<?php echo $config['recaptcha_sitekey']; ?>" data-callback="onLogin">
                         </form>
                     </div>
                 </div>

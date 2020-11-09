@@ -56,14 +56,6 @@
                         <?php endif; ?>
                     <?php endif; ?>
                             <br>
-                            <form method="get" action="/users.php">
-                                <select name="searchmethod">
-                                    <option value="new">Newest</option>
-                                    <option value="old">Oldest</option>
-                                    <option value="alph">Alphabetical</option>
-                                </select>
-                                <input type="submit" value="Go"> (Does not work yet)
-                            </form> 
                         </center>
                     </div>
                 </div>

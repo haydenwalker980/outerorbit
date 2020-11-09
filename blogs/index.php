@@ -34,6 +34,29 @@
                             <li><a href="" class="man">My Readers</a></li>
                             <li class="last"><a href="" class="man">My Preferred List</a></li>
                         </ul>
+                    </div><br>
+                    <div class="sideblog">
+                        <h3>Top 3 Bloggers</h3>
+                        <ul>
+                            <?php
+                                $blogTop = array();
+                                $stmt = $conn->prepare("SELECT * FROM blogs");
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+                                while($row = $result->fetch_assoc()) {
+                                    if(!isset($blogsTop[$row['author']])) {
+                                        $blogsTop[$row['author']] = 1;
+                                    } else {
+                                        $blogsTop[$row['author']]++;
+                                    }   
+                                }
+                                $blogsTopBackup = $blogsTop;
+                                rsort($blogsTop);
+                                $top3 = array_slice($blogsTop, 0, 3);
+                                foreach ($top3 as $key => $val) {?>
+                                    <li><a href="" class="man"><?php echo $val; ?> : <?php $keysquared = array_search($val, $blogsTopBackup); echo $keysquared; ?></a></li> 
+                                <?php } ?>
+                        </ul>
                     </div>
                 </div>
                 
@@ -106,7 +129,19 @@
                                         <?php echo htmlspecialchars($row['subject']); ?> from <b><?php echo htmlspecialchars($row['author']); ?></b></a><br>
                                         <small>
                                             <?php echo $row['date']; ?><br>
-                                            &nbsp;Posted by <a href="/profile.php?id=<?php echo getIDFromUser($row['author'], $conn); ?>"><?php echo $row['author']; ?></a><span id="floatRight"><a href="view.php?id=<?php echo $row['id']; ?>"><button>More Info</button></a></span>
+                                            &nbsp;Posted by <a href="/profile.php?id=<?php echo getIDFromUser($row['author'], $conn); ?>"><?php echo $row['author']; ?></a><br>
+                                            <span id="floatRight"><a href="view.php?id=<?php echo $row['id']; ?>"><button>More Info</button></a></span><br>
+                                            <?php $likes = (int)getLikesFromBlog($row['id'], $conn); ?>
+                                            <?php $dislikes = (int)getDislikesFromBlog($row['id'], $conn); ?>
+                                            <?php
+                                                $total = $likes + $dislikes;
+                                                $percent = round(($likes / $total) * 100);
+                                            ?>
+                                            <div id="rating_score" class="rating" style="display: inline-block;">Rating:<strong><?php echo $percent; ?>%</strong></div>
+                                            <div id="rate_btns" style="display: inline-block;">
+                                                <div id="rate_yes"><a href="like.php?id=<?php echo $row['id']; ?>">Booyah !</a></div>
+                                                <div id="rate_no"><a href="dislike.php?id=<?php echo $row['id']; ?>">No Way !</a></div>
+                                            </div>
                                         </small>
                                     </span>
                                 </div>

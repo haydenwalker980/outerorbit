@@ -7,6 +7,7 @@
         <title><?php echo $config['pr_title']; ?></title>
         <link rel="stylesheet" href="/static/css/required.css"> 
         <script src='https://www.google.com/recaptcha/api.js' async defer></script>
+        <link rel="stylesheet" href="/static/css/table2.css"> 
         <script src="/onLogin.js"></script>
         <style>
             .customtopLeft {
@@ -53,27 +54,34 @@
                     <center><img style="width: 10em;" src="dynamic/pfp/<?php echo $user['pfp']; ?>"></center><br>
                 </div>
                 <div class="customtopRight">
-                    <table id="userWall">
-                        <tbody>
-                            <?php
-                                $stmt = $conn->prepare("SELECT * FROM pms WHERE sto = ? ORDER BY id DESC");
-                                $stmt->bind_param("s", $_SESSION['siteusername']);
-                                $stmt->execute();
-                                $result = $stmt->get_result();
+                    <center><a href="sentpms.php"><button>View Sent PMs</button></a></center>
+                    <table id="replies">
+                        <tr>
+                            <th style="width: 20%;">Author</th>
+                            <th style="width: 70%;">Text</th>
+                            <th style="width: 10%;">Date</th>
+                        </tr>
+                        <?php 
+                            $stmt = $conn->prepare("SELECT * FROM pms WHERE sto = ? ORDER BY id DESC");
+                            $stmt->bind_param("s", $_SESSION['siteusername']);
+                            $stmt->execute();
+                            $result = $stmt->get_result();
 
-                                if($result->num_rows === 0) echo('You have no PMs.');
-                                while($row = $result->fetch_assoc()) { 
-                            ?>
+                            while($row = $result->fetch_assoc()) { 
+                        ?>
                             <tr>
-                                <td class="tableLeft">
-                                    <center><a href="profile.php?id=<?php echo getIDFromUser($row['sfrom'], $conn); ?>"><div><b><center><?php echo $row['sfrom']; ?></center></b></div><img src="/dynamic/pfp/<?php echo getPFPFromUser($row['sfrom'], $conn); ?>"></a></center>
+                                <td>
+                                    <center>
+                                        <a href="/profile.php?id=<?php echo getIDFromUser($row['sfrom'], $conn); ?>">
+                                            <img style="height: 3em; width: 3em;" src="/dynamic/pfp/<?php echo getPFPFromUser($row['sfrom'], $conn); ?>"><br>
+                                            <b><?php echo $row['sfrom']; ?></b>
+                                        </a><br>
+                                    </center>
                                 </td>
-                                <td class="tableRight">
-                                    <div><b class="date"><?php echo $row['date']; ?> | "<?php echo htmlspecialchars($row['subject']); ?>"</b></div><div><p><?php echo parseText($row['message']); ?></p></div>
-                                </td>
+                                <td><?php echo parseText($row['message']); ?></td>
+                                <td><?php echo $row['date']; ?></td>
                             </tr>
-                            <?php } ?>
-                        </tbody>
+                        <?php } ?>
                     </table>
                 </div>
             </div>

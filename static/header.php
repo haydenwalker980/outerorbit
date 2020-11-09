@@ -10,9 +10,22 @@ function getUserFromUsername($username, $connection) {
 
 	return $user;
 }
+
+if(isset($_SESSION['siteusername'])) {
+    $stmt = $conn->prepare("SELECT * FROM `users` WHERE `username` = ?");
+    $stmt->bind_param("s", $_SESSION['siteusername']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while($row = $result->fetch_assoc()) {
+        if($row['banstatus'] != "A") {
+            header("Location: ../ban.php");
+        }
+    }
+    $stmt->close();
+}
 ?>
 <div class="headerTop">
-    <a href="/index.php"><img src="/static/spacemyfall2.png"></a>
+    <a href="/index.php"><img src="/static/spacemyt.png"></a>
     <small id="floatRight">
         <?php if(isset($_SESSION['siteusername'])) {?>
         <a href="/logout.php">Logout</a>
@@ -34,7 +47,6 @@ function getUserFromUsername($username, $connection) {
 </div>
 <div class="headerBottom">
     <small>
-        <a href="/forums">Forums</a> &bull;
         <a href="/groups">Groups</a> &bull;
         <a href="/blogs">Blogs</a> &bull;
         <?php if (isset($_SESSION['siteusername'])) {

@@ -7,6 +7,8 @@
         <title><?php echo $config['pr_title']; ?></title>
         <link rel="stylesheet" href="/static/css/required.css"> 
         <script src='https://www.google.com/recaptcha/api.js' async defer></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+        <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
         <script src="/onLogin.js"></script>
         <style>
             .customtopLeft {
@@ -60,7 +62,8 @@
                             <?php if(isset($error)) { echo $error . "<br>"; } ?>
                             <b>Private Message</b><br>
                             <br><input placeholder="Subject" type="text" name="subject" required="required" size="63"></b><br>
-                            <textarea cols="48" placeholder="Body" name="comment"></textarea><br>
+                            <textarea cols="48" id="com" placeholder="Body" name="comment"></textarea><br>
+                            <script src="/js/commd.js"></script>
                             <input type="submit" value="Post" class="g-recaptcha" data-sitekey="<?php echo $config['recaptcha_sitekey']; ?>" data-callback="onLogin">
                         </form>
                     </div>

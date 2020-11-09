@@ -53,7 +53,7 @@
                             $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
                             $num_results_on_page = 16;
 
-                            $stmt = $conn->prepare("SELECT * FROM groups WHERE visiblity = 'Visible' LIMIT ?,?");
+                            $stmt = $conn->prepare("SELECT * FROM groups WHERE visiblity = 'Visible' ORDER BY id DESC LIMIT ?,?");
                             $calc_page = ($page - 1) * $num_results_on_page;
                             $stmt->bind_param('ii', $calc_page, $num_results_on_page);
                             $stmt->execute();
@@ -117,7 +117,7 @@
                                             $stmt->close();
                                         ?>
                                     </span><br>
-                                    <?php echo parseText($row['description']); ?><br>
+                                    <?php echo htmlspecialchars($row['description']); ?><br>
                                     <a href="view.php?id=<?php echo $row['id']; ?>"><button>More Info</button></a>
                                 </td>
                                 <td><center><a href="/profile.php?id=<?php echo getIDFromUser($row['owner'], $conn); ?>"><div><b><?php echo $row['owner']; ?></b></div><img style="height: 4em; width: 4em;" src="/dynamic/pfp/<?php echo getPFPFromUser($row['owner'], $conn); ?>"></a></center></td>

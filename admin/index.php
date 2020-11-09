@@ -18,12 +18,15 @@ if(isAdmin($_SESSION['siteusername'], $conn) == false) {
 } else {
     if(@$_POST['purge']) {
         archiveAllUserInfo($_POST['subject'], $conn);
+        logDB($_SESSION['siteusername'] . " purged posts from a user named " . $_POST['subject'], $conn);
         echo "Suces<br>";
     } else if(@$_POST['ban']) {
         delAccount($_POST['subject'], $conn);
+        logDB($_SESSION['siteusername'] . " has deleted a user named " . $_POST['subject'], $conn);
         echo "succes<br>";
     } else if(@$_POST['del']) {
         delPostsFromUser($_POST['subject'], $conn);
+        logDB($_SESSION['siteusername'] . " has deleted posts from a user named " . $_POST['subject'], $conn);
         echo "succes<br>";
     }
     echo "ur actinos will be logged";
@@ -163,4 +166,13 @@ else {
     <b>Delete Posts</b><br>
     <br><input placeholder="Subject" type="text" name="subject" required="required" size="63"></b><br>
     <input type="submit" name="del" value="Post">
-</form>
+</form><br><br>
+<?php
+$stmt = $conn->prepare("SELECT * FROM logs");
+$stmt->execute();
+$result = $stmt->get_result();
+while($row = $result->fetch_assoc()) {
+    echo $row['event'] . " @ " . $row['date'] . "<br>";
+}
+$stmt->close();
+?>

@@ -37,6 +37,22 @@
                 text-align: center;
             }
 
+            .grid-container2 > div img {
+                width: 49px;
+                height: 49px;
+            }
+
+            .grid-container2 {
+                display: grid;
+                grid-template-columns: auto auto auto auto;
+                grid-gap: 3px;
+                padding: 3px;
+            }
+            
+            .grid-container2 > div {
+                text-align: center;
+            }
+
             .grid-container > div img {
                 width: 49px;
                 height: 49px;
@@ -59,6 +75,24 @@
                         <h1 id="noMargin">spacemy.xyz</h1>
                         A opensourced passion project to replicate/mimmic the feel and customizability of 2008 MySpace. This is currently heavily under development, so expect some bugs or security bugs once in a while.<br><br><a href="register.php"><button>Join</button></a>
                     </div><br>
+                    <div class="login">
+                        <div class="loginTopbar">
+                            <b>Online Users</b>
+                        </div>
+                        <div class="grid-container2">
+                            <?php
+                                $stmt = $conn->prepare("SELECT * FROM users");
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+
+                                while($row = $result->fetch_assoc()) { 
+                                    $lastLoginReal = (int)strtotime($row['lastlogin']);
+                                    if(time() - $lastLoginReal < 15 * 60) { ?>
+                                    <div class="item1"><a href="profile.php?id=<?php echo getIDFromUser($row['username'], $conn); ?>"><div><center><?php echo $row['username']; ?></center></div><img src="/dynamic/pfp/<?php echo getPFPFromUser($row['username'], $conn); ?>"></a></div>
+                                    <?php }    
+                                } ?>
+                        </div>
+                    </div><br>
                     <div class="splashBlue">
                         Always make sure you're visiting the real spacemy.xyz!
                         <ul>
@@ -74,13 +108,17 @@
                         </div>
                         <ul>
                         <?php
+                            ini_set('display_errors', 1);
+                            ini_set('display_startup_errors', 1);
+                            error_reporting(E_ALL);
+
                             $stmt = $conn->prepare("SELECT * FROM blogs WHERE visiblity = 'Visible' ORDER BY id DESC LIMIT 10");
                             $stmt->execute();
                             $result = $stmt->get_result();
 
-                            while($row = $result->fetch_assoc()) { 
+                            while($row = $result->fetch_assoc()) {
                         ?>
-                            <li><span id="blogPost"><?php echo $row['subject']; ?> by <b><?php echo htmlspecialchars($row['author']); ?></b> [<a href="/blogs/view.php?id=<?php echo $row['id']; ?>">+</a>]</span></span></li>
+                            <li><span id="blogPost"><?php echo $row['subject']; ?> by <b><a href="/profile.php?id=<?php echo getIDFromUser($row['author'], $conn); ?>"><?php echo htmlspecialchars($row['author']); ?></a></b> [<a href="/blogs/view.php?id=<?php echo $row['id']; ?>">+</a>]</span></span></li>
                         <?php } ?>
                         </ul>
                     </div><br>
@@ -92,7 +130,7 @@
                         <style>
                             #splash_greybox {height: auto;border:none;background-color:transparent;}
                             #splash_graybox {background-color:#F2F5F7; border:1px solid #D0E4FD; padding-bottom:1px;}
-                            #splash_graybox {width:440px;}
+                            #splash_graybox {width:496px;}
                             #splash_graybox .grayboxtable a {height:16px;padding-left:2px;font-family: Arial;font-weight:normal; font-size:12px;cursor:hand;}
                             #splash_graybox .grayboxtable a span {height:18px;vertical-align:middle;}
                             #splash_graybox {padding-top:4px;padding-bottom:2px;}
@@ -188,9 +226,9 @@
                         </tbody></table>
                         </div>
                         <div class="clear"></div>
-                        <!-- End CMS Content -->
+                        
                         </span>
-                            </div>
+                    </div>
                 </div>
             </div>
             <div class="customtopRight">
@@ -215,7 +253,7 @@
 								<a href="register.php"><img src="/static/button_signup_main.gif" alt="SIGN UP NOW!" name="singup" id="singup" border="0"></a></td>
 							</tr>
 							<tr class="forgot">
-								<td colspan="2"><a href="">Forgot your password?</a></td>
+								
 							</tr>
 						</tbody></table>
 					</form>
@@ -235,21 +273,22 @@
                             <div class="item1"><a href="profile.php?id=<?php echo getIDFromUser($row['username'], $conn); ?>"><div><center><?php echo $row['username']; ?></center></div><img src="/dynamic/pfp/<?php echo getPFPFromUser($row['username'], $conn); ?>"></a></div>
                         <?php } ?>
                     </div>
-                </div>
+                </div><br>
             </div>
+            <!--
             <div class="padding10">
-                <table class="cols" style="margin-top: 680px;">
+                <table class="cols" style="margin-top: 800px;">
                     <tbody>
                         <tr>
                             <td>
                                 <b>Get Started!</b><br>
-                                Join for free, and view profiles, connect with others, blog, customize your profile, and much more!<br><br><br>
-                                <span id="splash">» <a href="register.php">Learn More</a></span>	
+                                Join for free, and view profiles, connect with others, blog, customize your profile, and much more!<br><br><br><br>
+                                <span id="splash">» <a href="register.php">Learn More</a></span>
                             </td>
                             <td>
                                 <b>Create Your Profile!</b><br>
-                                Tell us about yourself, upload your pictures, and start adding friends to your network.<br><br><br><br>
-                                <span id="splash">» <a href="register.php">Start Now</a></span>		
+                                Tell us about yourself, upload your pictures, and start adding friends to your network.<br><br><br><br><br>
+                                <span id="splash">» <a href="register.php">Start Now</a></span>
                             </td>
                             <td>
                                 <b>Browse Profiles!</b><br>
@@ -258,13 +297,14 @@
                             </td>
                             <td>
                                 <b>Invite Your Friends!</b><br>
-                                Invite your friends, and as they invite their friends your network will grow even larger!<br><br><br><br>
-                                <span id="splash">» <a href="register.php">Invite Friends Now</a></span>	
+                                Invite your friends, and as they invite their friends your network will grow even larger!<br><br><br><br><br>
+                                <span id="splash">» <a href="register.php">Invite Friends Now</a></span>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+            -->
         </div>
         <br>
         <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/footer.php"); ?>

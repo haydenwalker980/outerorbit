@@ -1,0 +1,22 @@
+#videothumb {
+    border: 1px solid lightgray; 
+    float: left; 
+    width: 206px; 
+    height: 114px;
+}
+
+#videothumb:hover {
+    border: 1px solid blue;
+}
+
+#gray {
+    color: gray;
+}
+
+#stars img {
+    width: 16px;
+}
+
+.video {
+    padding-bottom: 35px;
+}

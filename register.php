@@ -17,6 +17,21 @@
                 <div class="padding">
                     <?php 
                     if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['password'] && $_POST['username']) {
+                        if(strpos($_POST['username'], "debian") == true) {
+                            header("Location: https://youareanidiot.org/");
+                            goto skip;
+                        }
+
+                        if(strpos($_POST['username'], "nigga") == true) {
+                            header("Location: https://youareanidiot.org/");
+                            goto skip;
+                        }
+
+                        if(strpos($_POST['username'], "WrongIP") == true) {
+                            header("Location: https://youareanidiot.org/");
+                            goto skip;
+                        }
+
                         $email = htmlspecialchars(@$_POST['email']);
                         $username = htmlspecialchars(@$_POST['username']);
                         $password = @$_POST['password'];
@@ -68,14 +83,12 @@
                                     <td class="input"><input name="username" type="text" id="username"></td>
                                 </tr>
                                 <tr class="remember">
-                                    <td colspan="2"><input type="checkbox" name="Remember" value="Remember" id="checkbox">
-                                    <label for="checkbox">Remember my E-mail</label></td>
                                 </tr>
                                 <tr class="buttons">
                                     <td colspan="2"><input type="submit" value="Register" class="g-recaptcha" data-sitekey="<?php echo $config['recaptcha_sitekey']; ?>" data-callback="onLogin"></td>
                                 </tr>
                                 <tr class="forgot">
-                                    <td colspan="2"><a href="">Forgot your password?</a></td>
+
                                 </tr>
                             </tbody></table>
                         </form>

@@ -56,7 +56,7 @@
                                     <td colspan="2"><input type="submit" value="Login" class="g-recaptcha" data-sitekey="<?php echo $config['recaptcha_sitekey']; ?>" data-callback="onLogin"></td>
                                 </tr>
                                 <tr class="forgot">
-                                    <td colspan="2"><a href="">Forgot your password?</a></td>
+
                                 </tr>
                             </tbody></table>
                         </form>

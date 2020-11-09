@@ -5,8 +5,22 @@ body {
     background-color:#E5E5E5;
 }
 
+.song {
+    width: 270px;
+    border: 1px solid #999;
+    padding-bottom: 3px;
+    background-color: lightgray;
+}
+.song audio { width: 270px; }
+.song .controlBar, .controlBar {
+    background-color: rgba(26,26,26,0);
+}
+
 .headerTop {
     background-color: #8B0000;
+    background-image:url(https://www.spacemy.xyz/dynamic/files/9d2a9fac4c81b7b50cb7b3f3b2817dcb.png);
+    background-repeat:repeat-x;
+    background-position:bottom;
     color: white;
     padding-top: 6px;
     padding-bottom: 6px;
@@ -40,6 +54,8 @@ body {
     padding-top: 3px;
     padding-bottom: 3px;
     background-color: #B45A5A;
+    background-image:url(https://www.spacemy.xyz/dynamic/files/a11634fea23ca7c05bae192510fbb003.png);
+    background-repeat:repeat-x;
     color: white;
 }
 
@@ -52,16 +68,29 @@ body {
     text-decoration: none;
 }
 
+.blogCont {
+    padding: 5px;
+    background-color: #6699cc;
+}
+
+.blogsList ul {
+    list-style-type: circle;
+}
+
 .container a:hover {
     color: #C00;
     text-decoration: underline;
 }
 
 .container {
-    width: 50em;
+    width: 55em;
     margin: auto;
     background-color: white;
     overflow: auto;
+}
+
+#online {
+    width: 6em;
 }
 
 .footer {
@@ -384,4 +413,104 @@ div.sideblog li {
     border-right: 1px solid #fff;
     text-align: center;
     font-size: 10pt;
+}
+
+#splash {
+    background-color: #B5CCFB;
+    height: 14px;
+}
+
+div#rate_no, div#rate_yes {
+    width: 64px;
+    height: 19px;
+    overflow: hidden;
+    margin-bottom: 2px;
+}
+
+div#rate_no a, div#rate_yes a {
+    display: block;
+    padding: 0 0 0 16px;
+    font: normal 9px/19px Verdana,Arial,Helvetica,sans-serif;
+    color: #fff;
+    text-decoration: none;
+    background: url(/static/btn_rate_yes-no-trans.png) left top no-repeat;
+    background-position-x: left;
+    background-position-y: top;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader();
+}
+
+div#rate_no a {
+    background-position: 0 -38px;
+}
+
+div#rate_yes a {
+    background-position: 0 0;
+}
+
+.rating {
+    display: block;
+    width: 60px;
+    height: 40px;
+    background: url(/static/bgRatingBox-trans.gif) no-repeat left top;
+    overflow: hidden;
+    text-align: center;
+    font-size: 10px;
+    margin: 0;
+}
+
+div.rating strong {
+    display: block;
+    text-align: center;
+    font-size: 24px;
+    color: #59F;
+    margin: 0;
+    padding: 0;
+}
+
+ul#do_links {
+    margin-left: 150px;
+}
+ul#do_links, ul#do_links li {
+    list-style: none;
+    margin: 0;
+    margin-left: 0px;
+    padding: 0;
+}
+
+ul#do_links li {
+    width: 50%;
+    float: left;
+}
+ul#do_links, ul#do_links li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+a.blog_this {
+    background-position: 0 -25px;
+}
+a.bulletin_this, a.blog_this, a.email_this, a.favorite_this, a.add_to_profile, a.flag_inappropriate {
+    display: block;
+    padding-left: 23px;
+    height: 20px;
+    background: url(/static/iconset2-19x15px.gif) no-repeat 0 0;
+    background-position-x: 0px;
+    background-position-y: 0px;
+}
+
+a.bulletin_this {
+    background-position: 0 0;
+}
+
+a.email_this {
+    background-position: 0 -50px;
+}
+
+a.add_to_profile {
+    background-position: 0 -100px;
+}
+
+a.favorite_this {
+    background-position: 0 -75px;
 }
