@@ -1,30 +1,11 @@
--- phpMyAdmin SQL Dump
--- version 4.6.6deb5
--- https://www.phpmyadmin.net/
---
--- Host: localhost:3306
--- Generation Time: Oct 01, 2020 at 12:22 AM
--- Server version: 5.7.31-0ubuntu0.18.04.1
--- PHP Version: 7.2.24-0ubuntu0.18.04.6
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
--- Database: `spacemy2`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `blogcomments`
---
 
 CREATE TABLE `blogcomments` (
   `id` int(11) NOT NULL,
@@ -34,11 +15,12 @@ CREATE TABLE `blogcomments` (
   `author` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `blogs`
---
+CREATE TABLE `bloglikes` (
+  `id` int(11) NOT NULL,
+  `toid` int(11) NOT NULL,
+  `type` varchar(1) NOT NULL,
+  `owner` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `blogs` (
   `id` int(11) NOT NULL,
@@ -46,14 +28,9 @@ CREATE TABLE `blogs` (
   `message` varchar(10000) NOT NULL,
   `subject` varchar(100) NOT NULL,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `visiblity` varchar(255) NOT NULL DEFAULT 'Visible'
+  `visiblity` varchar(255) NOT NULL DEFAULT 'Visible',
+  `comment` varchar(1) NOT NULL DEFAULT 'a'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `categories`
---
 
 CREATE TABLE `categories` (
   `id` int(11) NOT NULL,
@@ -63,25 +40,14 @@ CREATE TABLE `categories` (
   `lastmodified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `comments`
---
-
 CREATE TABLE `comments` (
   `id` int(11) NOT NULL,
   `toid` int(11) NOT NULL,
-  `comment` varchar(500) NOT NULL,
+  `comment` varchar(1000) NOT NULL,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `author` varchar(255) NOT NULL
+  `author` varchar(255) NOT NULL,
+  `status` varchar(1) NOT NULL DEFAULT 'n'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `files`
---
 
 CREATE TABLE `files` (
   `id` int(11) NOT NULL,
@@ -90,24 +56,12 @@ CREATE TABLE `files` (
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `friends`
---
-
 CREATE TABLE `friends` (
   `id` int(11) NOT NULL,
   `sender` varchar(255) NOT NULL,
   `reciever` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL DEFAULT 'p'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `groupcomments`
---
 
 CREATE TABLE `groupcomments` (
   `id` int(11) NOT NULL,
@@ -117,12 +71,6 @@ CREATE TABLE `groupcomments` (
   `author` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `groups`
---
-
 CREATE TABLE `groups` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -130,14 +78,15 @@ CREATE TABLE `groups` (
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `owner` varchar(255) NOT NULL,
   `pic` varchar(255) NOT NULL,
-  `visiblity` varchar(255) NOT NULL DEFAULT 'Visible'
+  `visiblity` varchar(255) NOT NULL DEFAULT 'Visible',
+  `private` varchar(1) NOT NULL DEFAULT 'e'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `pms`
---
+CREATE TABLE `logs` (
+  `id` int(11) NOT NULL,
+  `event` varchar(255) NOT NULL,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `pms` (
   `id` int(11) NOT NULL,
@@ -149,12 +98,6 @@ CREATE TABLE `pms` (
   `isRead` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `reply`
---
-
 CREATE TABLE `reply` (
   `id` int(11) NOT NULL,
   `toid` int(11) NOT NULL,
@@ -163,11 +106,12 @@ CREATE TABLE `reply` (
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `threads`
---
+CREATE TABLE `reports` (
+  `id` int(11) NOT NULL,
+  `reportingid` int(11) NOT NULL,
+  `message` varchar(10000) NOT NULL,
+  `author` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `threads` (
   `id` int(11) NOT NULL,
@@ -178,12 +122,6 @@ CREATE TABLE `threads` (
   `message` varchar(1000) NOT NULL,
   `author` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `users`
---
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
@@ -203,150 +141,133 @@ CREATE TABLE `users` (
   `interestsmusic` varchar(500) NOT NULL DEFAULT '?',
   `currentgroup` int(11) NOT NULL DEFAULT '0',
   `steamurl` varchar(255) NOT NULL DEFAULT '',
-  `status` varchar(255) NOT NULL DEFAULT 'normal'
+  `status` varchar(255) NOT NULL DEFAULT 'normal',
+  `badges` varchar(255) NOT NULL DEFAULT '',
+  `banstatus` varchar(255) NOT NULL DEFAULT 'A',
+  `privacy` varchar(255) NOT NULL DEFAULT 'public|public|public',
+  `song` varchar(255) NOT NULL DEFAULT 'Unknown Song'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Indexes for dumped tables
---
+CREATE TABLE `videocomments` (
+  `id` int(11) NOT NULL,
+  `toid` int(11) NOT NULL,
+  `comment` varchar(500) NOT NULL,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `author` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Indexes for table `blogcomments`
---
+CREATE TABLE `videolikes` (
+  `id` int(11) NOT NULL,
+  `toid` int(11) NOT NULL,
+  `type` varchar(1) NOT NULL,
+  `owner` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `videos` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `author` varchar(255) NOT NULL,
+  `filename` varchar(255) NOT NULL,
+  `thumbnail` varchar(255) NOT NULL,
+  `publish` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `description` varchar(1024) NOT NULL,
+  `tags` varchar(255) NOT NULL,
+  `views` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
 ALTER TABLE `blogcomments`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `blogs`
---
+ALTER TABLE `bloglikes`
+  ADD PRIMARY KEY (`id`);
+
 ALTER TABLE `blogs`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `categories`
---
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id` (`id`);
 
---
--- Indexes for table `comments`
---
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `files`
---
 ALTER TABLE `files`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `friends`
---
 ALTER TABLE `friends`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `groupcomments`
---
 ALTER TABLE `groupcomments`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `groups`
---
 ALTER TABLE `groups`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `pms`
---
+ALTER TABLE `logs`
+  ADD PRIMARY KEY (`id`);
+
 ALTER TABLE `pms`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `reply`
---
 ALTER TABLE `reply`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `threads`
---
+ALTER TABLE `reports`
+  ADD PRIMARY KEY (`id`);
+
 ALTER TABLE `threads`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `users`
---
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
---
--- AUTO_INCREMENT for dumped tables
---
+ALTER TABLE `videocomments`
+  ADD PRIMARY KEY (`id`);
 
---
--- AUTO_INCREMENT for table `blogcomments`
---
+ALTER TABLE `videolikes`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `videos`
+  ADD PRIMARY KEY (`id`);
+
+
 ALTER TABLE `blogcomments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=312;
---
--- AUTO_INCREMENT for table `blogs`
---
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `bloglikes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `blogs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=203;
---
--- AUTO_INCREMENT for table `categories`
---
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `comments`
---
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=778;
---
--- AUTO_INCREMENT for table `files`
---
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `files`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT for table `friends`
---
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `friends`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
---
--- AUTO_INCREMENT for table `groupcomments`
---
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `groupcomments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
---
--- AUTO_INCREMENT for table `groups`
---
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
---
--- AUTO_INCREMENT for table `pms`
---
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `pms`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
---
--- AUTO_INCREMENT for table `reply`
---
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `reply`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
---
--- AUTO_INCREMENT for table `threads`
---
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `reports`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `threads`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
---
--- AUTO_INCREMENT for table `users`
---
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `videocomments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `videolikes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `videos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
