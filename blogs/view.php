@@ -76,7 +76,7 @@
                             <div class="contactingTopbar">
                                 Contacting <?php echo $user['username']; ?>
                             </div>
-                            <div class="padding">
+                            <div class="padding-contacts">
                                 <ul>
                                     <li><a href="pm.php?id=<?php echo $user['id']; ?>">Message</a></li>
                                     <li><a href="/friends/add.php?id=<?php echo $user['id']; ?>">Friend</a></li>
