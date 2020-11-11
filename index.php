@@ -73,7 +73,7 @@
                 <div class="padding">
                     <div class="hero">
                         <h1 id="noMargin">spacemy.xyz</h1>
-                        An opensourced passion project to replicate/mimmic the feel and customizability of 2008 MySpace. This is currently heavily under development, so expect some bugs or security bugs once in a while.<br><?php if(isset($_SESSION['siteusername'])): ?><br><a href="register.php"><button>Join</button><?php endif ?></a>
+                        An opensourced passion project to replicate/mimmic the feel and customizability of 2008 MySpace. This is currently heavily under development, so expect some bugs or security bugs once in a while.<br><?php if(isset($_SESSION['siteusername'])): ?><br><a href="register.php"><button>Join</button></a><?php endif ?>
                     </div><br>
                     <div class="login">
                         <div class="loginTopbar">
