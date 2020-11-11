@@ -64,7 +64,7 @@
                         Remember to make sure that your reply does not break the terms of service!
                     </div><br>
                     <center>Written by <b><a href="/profile.php?id=<?php echo getIDFromUser($blog['author'], $conn); ?>"><?php echo htmlspecialchars($blog['author']); ?></a></b>
-                        <br><img style="width: 10em;" src="/dynamic/pfp/<?php echo getPFPFromUser($blog['author'], $conn) ?>"><br><?php if(isset($lastLogin)) { echo "<img id='online' src='/static/online.gif'>"; } ?><br>
+                        <br><img id="pfp" style="width: 10em;" src="/dynamic/pfp/<?php echo getPFPFromUser($blog['author'], $conn) ?>"><br><?php if(isset($lastLogin)) { echo "<img id='online' src='/static/online.gif'>"; } ?><br>
                     </center>
                     <div class="userInfoBlog">
                         <?php echo parseText($user['bio']); ?><br>
