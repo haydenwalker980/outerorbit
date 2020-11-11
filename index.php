@@ -73,7 +73,7 @@
                 <div class="padding">
                     <div class="hero">
                         <h1 id="noMargin">spacemy.xyz</h1>
-                        A opensourced passion project to replicate/mimmic the feel and customizability of 2008 MySpace. This is currently heavily under development, so expect some bugs or security bugs once in a while.<br><br><a href="register.php"><button>Join</button></a>
+                        An opensourced passion project to replicate/mimmic the feel and customizability of 2008 MySpace. This is currently heavily under development, so expect some bugs or security bugs once in a while.<br><?php if(isset($_SESSION['siteusername'])): ?><br><a href="register.php"><button>Join</button></a><?php endif ?>
                     </div><br>
                     <div class="login">
                         <div class="loginTopbar">
@@ -231,7 +231,8 @@
                     </div>
                 </div>
             </div>
-            <div class="customtopRight">
+	    <div class="customtopRight">
+            <?php if(isset($_SESSION['siteusername'])): ?>
                 <div id="login">
 					<b>Member Login</b>
 					<form>
@@ -258,6 +259,7 @@
 						</tbody></table>
 					</form>
 				</div><br>
+                                <?php endif ?>
                 <div class="login">
                     <div class="loginTopbar">
                         <b>Cool New People</b><span style="float: right; color: white;"><small><a style="color: white;" href="/users.php">[view more]</a></small></span>

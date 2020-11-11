@@ -64,7 +64,7 @@
                         Remember to make sure that your reply does not break the terms of service!
                     </div><br>
                     <center>Written by <b><a href="/profile.php?id=<?php echo getIDFromUser($blog['author'], $conn); ?>"><?php echo htmlspecialchars($blog['author']); ?></a></b>
-                        <br><img style="width: 10em;" src="/dynamic/pfp/<?php echo getPFPFromUser($blog['author'], $conn) ?>"><br><?php if(isset($lastLogin)) { echo "<img id='online' src='/static/online.gif'>"; } ?><br>
+                        <br><img id="pfp" style="width: 10em;" src="/dynamic/pfp/<?php echo getPFPFromUser($blog['author'], $conn) ?>"><br><?php if(isset($lastLogin)) { echo "<img id='online' src='/static/online.gif'>"; } ?><br>
                     </center>
                     <div class="userInfoBlog">
                         <?php echo parseText($user['bio']); ?><br>
@@ -76,7 +76,7 @@
                             <div class="contactingTopbar">
                                 Contacting <?php echo $user['username']; ?>
                             </div>
-                            <div class="padding">
+                            <div class="padding-contacts">
                                 <ul>
                                     <li><a href="pm.php?id=<?php echo $user['id']; ?>">Message</a></li>
                                     <li><a href="/friends/add.php?id=<?php echo $user['id']; ?>">Friend</a></li>
@@ -90,7 +90,10 @@
                             <?php $dislikes = (int)getDislikesFromBlog($blog['id'], $conn); ?>
                             <?php
                                 $total = $likes + $dislikes;
-                                $percent = round(($likes / $total) * 100);
+                                if($total > 0)
+                                    $percent = round(($likes / $total) * 100);
+                                else 
+                                    $percent = 100;
                             ?>
                             <div id="rating_score" class="rating" style="display: inline-block;">Rating:<strong><?php echo $percent; ?>%</strong></div>
                             <div id="rate_btns" style="display: inline-block;">
