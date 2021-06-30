@@ -25,7 +25,7 @@ if(isset($_SESSION['siteusername'])) {
 }
 ?>
 <div class="headerTop">
-    <a href="/index.php"><img src="/static/spacemyt.png"></a>
+    <a href="/index.php"><img src="/static/spacemy.png"></a>
     <small id="floatRight">
         <?php if(isset($_SESSION['siteusername'])) {?>
         <a href="/logout.php">Logout</a>
@@ -87,7 +87,7 @@ if(isset($_SESSION['siteusername'])) {
     $stmt->bind_param("s", $_SESSION['siteusername']);
     $stmt->execute();
     $result = $stmt->get_result();
-    if($result->num_rows === 0) die("U have been ban");
+    if($result->num_rows === 0) die("the whole squad is laughing");
     $stmt->close();
 };
 ?>
