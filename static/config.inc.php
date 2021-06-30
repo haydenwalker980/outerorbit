@@ -1,7 +1,7 @@
 <?php
     $config = array();
 
-    $config['pr_title'] = "spacemyrebooted";
+    $config['pr_title'] = "OuterOrbit";
     $config['db_user'] = "root";
     $config['db_pass'] = "";
     $config['db_name'] = "spacemy2";
