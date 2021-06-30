@@ -110,7 +110,7 @@
                             </td>
                             <td>
                                 <b>Browse Profiles!</b><br>
-                                Read through all of the profiles on SpaceMy! See pix, read blogs, and more!<br><br><br><br>
+                                Read through all of the profiles on OuterOrbit! See pix, read blogs, and more!<br><br><br><br>
                                 <span id="splash">» <a href="users.php">Browse Now</a></span>
                             </td>
                             <td>
