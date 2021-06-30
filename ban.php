@@ -77,7 +77,7 @@
             <br>
             <div class="padding">
                 <h2 id="noMargin">You have been banned</h2>      
-                You have been banned from SpaceMy until further notice due to the following reason:
+                You have been banned from OuterOrbit until further notice due to the following reason:
 <pre>
 <?php 
 if(isset($_SESSION['siteusername'])) {
