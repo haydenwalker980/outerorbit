@@ -1,7 +1,7 @@
 <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/config.inc.php"); ?>
 <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/conn.php"); ?>
 <?php require($_SERVER['DOCUMENT_ROOT'] . "/lib/profile.php"); ?>
-<h1>admin Panel (Suppsoed to loo kliek crap)</h1>
+<h1>outerorbt adam panl</h1>
 <?php
 session_start();
 
@@ -14,20 +14,20 @@ if(!isset($_SESSION['siteusername'])) {
 }
 
 if(isAdmin($_SESSION['siteusername'], $conn) == false) {
-    die("Ur not admin");
+    die("ur not admin dingus");
 } else {
     if(@$_POST['purge']) {
         archiveAllUserInfo($_POST['subject'], $conn);
         logDB($_SESSION['siteusername'] . " purged posts from a user named " . $_POST['subject'], $conn);
-        echo "Suces<br>";
+        echo "the annual purge has commenced<br>";
     } else if(@$_POST['ban']) {
         delAccount($_POST['subject'], $conn);
         logDB($_SESSION['siteusername'] . " has deleted a user named " . $_POST['subject'], $conn);
-        echo "succes<br>";
+        echo "Enemy Titan down.<br>";
     } else if(@$_POST['del']) {
         delPostsFromUser($_POST['subject'], $conn);
         logDB($_SESSION['siteusername'] . " has deleted posts from a user named " . $_POST['subject'], $conn);
-        echo "succes<br>";
+        echo "alakazoom alakazam posts are gon<br>";
     }
     echo "ur actinos will be logged";
 }
