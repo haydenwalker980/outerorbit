@@ -1,5 +1,5 @@
-# spacemy.xyz-rebooted
-A fork/faithful recreation of typicalname0/spacemy.xyz
+# OuterOrbit
+a myspace clone. based off spacemy.xyz-rebooted by the-real-sumsome.
 
 ## dependencies
 requires composer... u shoudl know how to use composer
@@ -12,14 +12,15 @@ uses mysqli/mysql server,...;
 
 ## how 2 setup
 ```
-git clone https://github.com/the-real-sumsome/spacemy.xyz-rebooted.git
-mv /your/git/directory /your/webserver/dir/
+git clone https://github.com/haydenwalker980/outerorbit.git
+mv ./outerorbit /your/webserver/dir/
 cd /your/webserver/dir/
-php composer.phar install
+php composer.phar install (or composer install)
 
 sudo nano static/config.inc.php
 get a steam api key from http://steamcommunity.com/dev/apikey
 get a recaptcha priv/pub key from https://www.google.com/recaptcha/admin
+fill their respective fields in
 
 import the sql file into phpmyadmin/whatever
 
@@ -29,7 +30,7 @@ u are done
 ```
 
 ## notes
-this is a project just for experimenting with php. u can contribute if there are some security issues.
+i just spun up this project in my own free time
 
 ## thanks to
-everyone who has helped me web dev
+the-real-sumsome, as well as the creator of the OG og repo
